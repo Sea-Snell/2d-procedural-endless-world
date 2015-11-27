@@ -19,6 +19,7 @@
 		746555541C07777A005A20BF /* generateTerrainData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555531C07777A005A20BF /* generateTerrainData.swift */; };
 		746555561C07796F005A20BF /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555551C07796F005A20BF /* Camera.swift */; };
 		746555581C078001005A20BF /* terrainWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555571C078001005A20BF /* terrainWorld.swift */; };
+		7465555A1C08DEF3005A20BF /* randomNumbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555591C08DEF3005A20BF /* randomNumbers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		746555531C07777A005A20BF /* generateTerrainData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = generateTerrainData.swift; sourceTree = "<group>"; };
 		746555551C07796F005A20BF /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		746555571C078001005A20BF /* terrainWorld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = terrainWorld.swift; sourceTree = "<group>"; };
+		746555591C08DEF3005A20BF /* randomNumbers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = randomNumbers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 				746555531C07777A005A20BF /* generateTerrainData.swift */,
 				7465554F1C076C13005A20BF /* generateTerrainVisuals.swift */,
 				746555511C077068005A20BF /* terrainFunction.swift */,
+				746555591C08DEF3005A20BF /* randomNumbers.swift */,
 				746555261C076B8D005A20BF /* GameScene.sks */,
 				746555281C076B8D005A20BF /* Assets.xcassets */,
 				7465552A1C076B8D005A20BF /* MainMenu.xib */,
@@ -274,6 +277,7 @@
 				746555251C076B8D005A20BF /* GameScene.swift in Sources */,
 				746555231C076B8D005A20BF /* AppDelegate.swift in Sources */,
 				746555561C07796F005A20BF /* Camera.swift in Sources */,
+				7465555A1C08DEF3005A20BF /* randomNumbers.swift in Sources */,
 				746555541C07777A005A20BF /* generateTerrainData.swift in Sources */,
 				746555581C078001005A20BF /* terrainWorld.swift in Sources */,
 				746555501C076C13005A20BF /* generateTerrainVisuals.swift in Sources */,
@@ -501,6 +505,7 @@
 				746555481C076B8D005A20BF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		746555491C076B8D005A20BF /* Build configuration list for PBXNativeTarget "terrariaLikeWorldTests" */ = {
 			isa = XCConfigurationList;
@@ -509,6 +514,7 @@
 				7465554B1C076B8D005A20BF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7465554C1C076B8D005A20BF /* Build configuration list for PBXNativeTarget "terrariaLikeWorldUITests" */ = {
 			isa = XCConfigurationList;
@@ -517,6 +523,7 @@
 				7465554E1C076B8D005A20BF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
