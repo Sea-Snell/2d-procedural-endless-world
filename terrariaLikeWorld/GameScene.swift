@@ -24,7 +24,7 @@ class GameScene: SKScene {
         self.playerPlaceHolder.size.height = 50.0
         self.addChild(self.playerPlaceHolder)
         
-        self.myCamera.position.x = self.frame.midX
+        self.myCamera.position.x = self.frame.midX - 500
         self.myCamera.position.y = self.frame.minY
         self.addChild(myCamera)
     }
@@ -39,12 +39,12 @@ class GameScene: SKScene {
         if keys["left"] == true{
             self.myCamera.position.x += 5
             self.myCamera.updateYPos(CGPoint(x: self.frame.midX, y: self.frame.midY))
-            self.myCamera.endlessTerrain(self.frame.minX, rightBound: self.frame.maxX)
+            self.myCamera.endlessTerrain(self.frame.minX - 200, rightBound: self.frame.maxX + 200)
         }
         if keys["right"] == true{
             self.myCamera.position.x -= 5
             self.myCamera.updateYPos(CGPoint(x: self.frame.midX, y: self.frame.midY))
-            self.myCamera.endlessTerrain(self.frame.minX, rightBound: self.frame.maxX)
+            self.myCamera.endlessTerrain(self.frame.minX - 200, rightBound: self.frame.maxX + 200)
         }
     }
     

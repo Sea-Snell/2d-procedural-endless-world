@@ -24,16 +24,14 @@ class TerrainWorld: SKNode{
         self.terrain = []
         
         super.init()
-        
-        for _ in 0..<12{
+    
+        for _ in 0..<26{
             self.addBlockRight()
-            self.addBlockLeft()
         }
     }
     
     func addBlockRight(){
         let startIdx = (terrain.count * self.blockSize) + self.start
-        
         let terrainBlockData = generateTerrainData(startIdx, n: self.blockSize)
         let terrainBlock = Terrain(n: self.blockSize, blockSize: self.blockWidth, terrainData: terrainBlockData)
         terrainBlock.generateTerrain()
