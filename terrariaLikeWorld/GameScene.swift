@@ -11,8 +11,18 @@ import SpriteKit
 class GameScene: SKScene {
     var keys = ["up": false, "down": false, "left": false, "right": false]
     var myCamera: MyCamera = MyCamera()
+    var playerPlaceHolder = SKSpriteNode(imageNamed: "circle")
+    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
+        
+        self.playerPlaceHolder.position.x = self.frame.midX
+        self.playerPlaceHolder.position.y = self.frame.midY
+        self.playerPlaceHolder.anchorPoint.x = 0.5
+        self.playerPlaceHolder.anchorPoint.y = 0.5
+        self.playerPlaceHolder.size.width = 50.0
+        self.playerPlaceHolder.size.height = 50.0
+        self.addChild(self.playerPlaceHolder)
         
         self.myCamera.position.x = self.frame.midX
         self.myCamera.position.y = self.frame.minY

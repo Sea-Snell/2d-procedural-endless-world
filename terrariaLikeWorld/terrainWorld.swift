@@ -25,7 +25,7 @@ class TerrainWorld: SKNode{
         
         super.init()
         
-        for _ in 0..<30{
+        for _ in 0..<12{
             self.addBlockRight()
             self.addBlockLeft()
         }
