@@ -11,18 +11,33 @@ import Foundation
 func terrainFunction(var a: Int) -> Int{
     a = abs(a)
     
-    var total = 0
-    for i in 1...8{
+    var total1 = 0
+    var total2 = 0
+    var total3 = 0
+    
+    for i in 4...8{
         let pt1 = Int(pow(2.0, Double(i)))
-        total += noiseGenerator(a, wavelength: pt1, amplitude: pt1 / 2)
+        total1 += noiseGenerator(a, wavelength: pt1, amplitude: pt1 / 2, seed: 8)
     }
     
-    return total
+    for i in 1...6{
+        let pt1 = Int(pow(2.0, Double(i)))
+        total2 += noiseGenerator(a, wavelength: pt1, amplitude: pt1 / 2, seed: 7)
+    }
+    
+    for i in 6...8{
+        let pt1 = Int(pow(2.0, Double(i)))
+        total3 += noiseGenerator(a, wavelength: pt1, amplitude: pt1 / 2, seed: 4)
+    }
+    
+    let avg = Double(total3) / 224.0
+    
+    return Int(Double(total1) * avg + Double(total2) * (1.0 - avg))
 }
 
-func noiseGenerator(a: Int, wavelength: Int, amplitude: Int) -> Int{
-    let left = randRange(1, maxVal: Double(amplitude), seed: (a - (a % wavelength)) * wavelength)
-    let right = randRange(1, maxVal: Double(amplitude), seed: (wavelength + (a - (a % wavelength))) * wavelength)
+func noiseGenerator(a: Int, wavelength: Int, amplitude: Int, seed: Int) -> Int{
+    let left = randRange(1, maxVal: Double(amplitude), seed: Int64((a - (a % wavelength)) * wavelength * seed))
+    let right = randRange(1, maxVal: Double(amplitude), seed: Int64((wavelength + (a - (a % wavelength))) * wavelength * seed))
     return Int(cosineInterplation(left, b: right, x: Double(a % wavelength) / Double(wavelength)))
 }
 
