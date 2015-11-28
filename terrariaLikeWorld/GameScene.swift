@@ -37,12 +37,12 @@ class GameScene: SKScene {
         /* Called before each frame is rendered */
         
         if keys["left"] == true{
-            self.myCamera.position.x += 5
+            self.myCamera.position.x += 15
             self.myCamera.updateYPos(CGPoint(x: self.frame.midX, y: self.frame.midY))
             self.myCamera.endlessTerrain(self.frame.minX - 200, rightBound: self.frame.maxX + 200)
         }
         if keys["right"] == true{
-            self.myCamera.position.x -= 5
+            self.myCamera.position.x -= 15
             self.myCamera.updateYPos(CGPoint(x: self.frame.midX, y: self.frame.midY))
             self.myCamera.endlessTerrain(self.frame.minX - 200, rightBound: self.frame.maxX + 200)
         }
