@@ -19,7 +19,7 @@ func rand(var seed: Int64) -> Double{
     for _ in 0..<3{
         seed = generateRandomNumber(seed)
     }
-    return getRangedRandomNumber(seed)
+    return abs(getRangedRandomNumber(seed))
 }
 
 func randRange(minVal: Double, maxVal: Double, seed: Int64) -> Double{
