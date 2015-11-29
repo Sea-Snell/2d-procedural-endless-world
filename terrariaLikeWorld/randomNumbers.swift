@@ -16,7 +16,7 @@ func getRangedRandomNumber(seed: Int64) -> Double{
 }
 
 func rand(var seed: Int64) -> Double{
-    for _ in 0..<3{
+    for _ in 0..<4{
         seed = generateRandomNumber(seed)
     }
     return abs(getRangedRandomNumber(seed))

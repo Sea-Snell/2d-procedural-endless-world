@@ -32,27 +32,39 @@ class MyCamera: SKNode{
     
     func updateYPos(centerPos: CGPoint){
         let currentPos = Int((centerPos.x - self.position.x) / CGFloat(self.terrainWorld.blockWidth))
-        if currentPos >= self.terrainWorld.start && currentPos < self.terrainWorld.terrainData.count + self.terrainWorld.start{
-            let currentHeight = self.terrainWorld.terrainData[currentPos - self.terrainWorld.start]
+        if CGFloat(currentPos) >= self.terrainWorld.start.x && CGFloat(currentPos) < CGFloat(self.terrainWorld.terrainData.count) + self.terrainWorld.start.x{
+            let currentHeight = terrainFunction(currentPos)
             let newY = centerPos.y - CGFloat(currentHeight * self.terrainWorld.blockWidth)
             let moveY = SKAction.moveToY(newY, duration: 0.5)
             self.runAction(moveY)
         }
     }
     
-    func endlessTerrain(leftBound: CGFloat, rightBound: CGFloat){
+    func endlessTerrain(leftBound: CGFloat, rightBound: CGFloat, topBound: CGFloat, bottomBound: CGFloat){
         if self.terrainWorld.terrain.count > 0{
-            let isOutLeftBound = self.position.x + (self.terrainWorld.terrain[0].position.x + CGFloat(self.terrainWorld.blockWidth * self.terrainWorld.blockSize)) < leftBound
-            let isOutRightBound = self.position.x + self.terrainWorld.terrain[self.terrainWorld.terrain.count - 1].position.x > rightBound
+            let isOutLeftBound = self.position.x + (self.terrainWorld.terrain[0][0].position.x + CGFloat(self.terrainWorld.blockWidth * self.terrainWorld.blockSize)) < leftBound
+            let isOutRightBound = self.position.x + self.terrainWorld.terrain[0][self.terrainWorld.terrain[0].count - 1].position.x > rightBound
+            let isOutTopBound = self.position.y + (self.terrainWorld.terrain[self.terrainWorld.terrain.count - 1][0].position.y + CGFloat(self.terrainWorld.blockWidth * self.terrainWorld.blockSize)) > topBound
+            let isOutBottomBound = self.position.y + self.terrainWorld.terrain[0][0].position.y < bottomBound
         
             if isOutLeftBound{
-                self.terrainWorld.removeBlockLeft()
-                self.terrainWorld.addBlockRight()
+                self.terrainWorld.removeBlockColLeft()
+                self.terrainWorld.addBlockColRight(26)
             }
         
             if isOutRightBound{
-                self.terrainWorld.removeBlockRight()
-                self.terrainWorld.addBlockLeft()
+                self.terrainWorld.removeBlockColRight()
+                self.terrainWorld.addBlockColLeft(26)
+            }
+            
+            if isOutTopBound{
+                self.terrainWorld.removeBlockRowTop()
+                self.terrainWorld.addBlockRowBottom(26)
+            }
+            
+            if isOutBottomBound{
+                self.terrainWorld.removeBlockRowBottom()
+                self.terrainWorld.addBlockRowTop(26)
             }
         }
     }

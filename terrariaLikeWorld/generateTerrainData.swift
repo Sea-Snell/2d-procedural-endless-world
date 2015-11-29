@@ -8,10 +8,15 @@
 
 import Foundation
 
-func generateTerrainData(leftPos: Int, n: Int) -> [Int]{
-    var terrainData: [Int] = []
-    for i in leftPos..<leftPos + n{
-        terrainData.append(terrainFunction(i))
+func generateTerrainData(leftPos: CGPoint, blockSize: Int) -> [[Int]]{
+    var terrainData: [[Int]] = []
+    for x in Int(leftPos.y)..<Int(leftPos.y) + blockSize{
+        var temp: [Int] = []
+        for i in Int(leftPos.x)..<Int(leftPos.x) + blockSize{
+            temp.append(isValidBlock(i, y: x))
+        }
+        terrainData.append(temp)
     }
+    
     return terrainData
 }
