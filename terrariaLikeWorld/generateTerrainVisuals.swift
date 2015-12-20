@@ -29,11 +29,12 @@ class Terrain: SKNode{
     
     
     func generateTerrain(){
+        var blocks = ["dirtBlock", "stoneBlock"]
         for i in 0..<self.blockSize{
             for x in 0..<self.blockSize{
-                if self.terrainData[x][i] == 1{
+                if self.terrainData[x][i] != 0{
                     
-                    let block = SKSpriteNode(imageNamed: "tile")
+                    let block = SKSpriteNode(imageNamed: blocks[self.terrainData[x][i] - 1])
                     block.position.x = self.position.x + CGFloat(i * self.blockWidth)
                     block.position.y = self.position.y + CGFloat(x * self.blockWidth)
                     block.size.width = CGFloat(self.blockWidth)

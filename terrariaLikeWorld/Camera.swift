@@ -35,8 +35,9 @@ class MyCamera: SKNode{
         if CGFloat(currentPos) >= self.terrainWorld.start.x && CGFloat(currentPos) < CGFloat(self.terrainWorld.terrainData.count) + self.terrainWorld.start.x{
             let currentHeight = terrainFunction(currentPos)
             let newY = centerPos.y - CGFloat(currentHeight * self.terrainWorld.blockWidth)
-            let moveY = SKAction.moveToY(newY, duration: 0.5)
-            self.runAction(moveY)
+            self.position.y = newY
+            //let moveY = SKAction.moveToY(newY, duration: 0.5)
+            //self.runAction(moveY)
         }
     }
     

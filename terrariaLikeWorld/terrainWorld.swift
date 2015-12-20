@@ -163,8 +163,6 @@ class TerrainWorld: SKNode{
         let colSize = self.terrain.count
         var deadTerain: [Terrain] = []
         for i in 0..<colSize{
-            //print(self.blockSize, self.terrainData.count)
-            //print(Array(self.terrainData[i][self.blockSize..<self.terrainData.count]))
             self.terrainData[i] = Array(self.terrainData[i][self.blockSize..<self.terrainData.count])
             deadTerain.append(self.terrain[i][0])
             self.terrain[i].removeAtIndex(0)

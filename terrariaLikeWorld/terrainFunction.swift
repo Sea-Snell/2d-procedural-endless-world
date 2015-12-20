@@ -15,12 +15,12 @@ func isValidBlock(x: Int, y: Int) -> Int{
     
     if y > height{
         if shouldBeBlock >= 0.5 && shouldBeBlock <= 1.0{
-            return 1
+            return determineBlock(x, y: y, seed: 8)
         }
         return 0
     }
     if terrainHolesFunction(x, y: y) >= 0.2{
-        return 1
+        return determineBlock(x, y: y, seed: 8)
     }
     return 0
 }
@@ -36,6 +36,18 @@ func terrainFunction(a: Int) -> Int{
     
     
     return total1
+}
+
+func determineBlock(x: Int, y: Int, seed: Int) -> Int{
+    var probibality: Double = 0.00005 * Double(y * y) + 0.05
+    if probibality > 0.95{
+        probibality = 0.95
+    }
+    let randVal = rand(Int64(x * y * seed))
+    if randVal <= probibality{
+        return 2
+    }
+    return 1
 }
 
 func terrainHolesFunction(x: Int, y: Int) -> Double{
