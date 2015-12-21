@@ -58,6 +58,8 @@ class TerrainWorld: SKNode{
             }
         }
         
+        self.findWater(0..<self.terrainData.count, range2: self.terrainData.count - 2..<self.terrainData.count)
+        
         
         for i in 0..<colSize{
             let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: self.array2dSplice(self.terrainData, range1: i * self.blockSize..<(i + 1) * self.blockSize, range2: self.terrainData[0].count - self.blockSize..<self.terrainData[0].count))
@@ -96,6 +98,8 @@ class TerrainWorld: SKNode{
             }
         }
         
+        self.findWater(0..<self.terrainData.count, range2: 0..<2)
+        
         
         for i in 0..<colSize{
             
@@ -132,6 +136,8 @@ class TerrainWorld: SKNode{
             }
         }
         
+        self.findWater(self.terrainData.count - 2..<self.terrainData.count, range2: 0..<self.terrainData[0].count)
+        
         
         for i in 0..<rowSize{
             let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: self.array2dSplice(self.terrainData, range1: self.terrainData.count - self.blockSize..<self.terrainData.count, range2: i * self.blockSize..<(i + 1) * self.blockSize))
@@ -156,8 +162,9 @@ class TerrainWorld: SKNode{
         for _ in 0..<blockSize{
             self.terrainData.insert([], atIndex: 0)
         }
-        
         self.terrain.insert([], atIndex: 0)
+        
+        
         
         for i in 0..<rowSize{
             let blockPos = CGPoint(x: self.start.x + CGFloat(i * self.blockSize), y: CGFloat(blockY))
@@ -168,6 +175,8 @@ class TerrainWorld: SKNode{
             }
         }
         
+        self.findWater(0..<2, range2: 0..<self.terrainData[0].count)
+        
         for i in 0..<rowSize{
             let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: self.array2dSplice(self.terrainData, range1: 0..<self.blockSize, range2: i * self.blockSize..<(i + 1) * self.blockSize))
             terrainVal.generateTerrain()
@@ -177,8 +186,6 @@ class TerrainWorld: SKNode{
             
             self.terrain[0].append(terrainVal)
         }
-        
-        self.findWater()
     }
     
     func removeBlockColLeft(){
@@ -222,11 +229,13 @@ class TerrainWorld: SKNode{
         self.terrain.removeLast()
     }
     
-    func findWater(){
-        for i in 0..<self.terrainData.count{
-            for x in 0..<self.terrainData[i].count{
-                if self.terrainData[i][x] == 5{
-                    self.processWater([i, x])
+    func findWater(range1: Range<Int>, range2: Range<Int>){
+        for i in range1{
+            for x in range2{
+                if i < self.terrainData.count && i >= 0 && x < self.terrainData[0].count && x > 0{
+                    if self.terrainData[i][x] == 5{
+                        self.processWater([i, x])
+                    }
                 }
             }
         }
