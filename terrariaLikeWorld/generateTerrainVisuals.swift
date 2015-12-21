@@ -13,11 +13,13 @@ class Terrain: SKNode{
     var blockSize: Int
     var terrainData: [[Int]]
     var blockWidth: Int
+    var blockTypes: [String]
     
     init(blockSize: Int, blockWidth: Int, terrainData: [[Int]]) {
         self.blockSize = blockSize
         self.blockWidth = blockWidth
         self.terrainData = terrainData
+        self.blockTypes = ["", "stoneBlock", "dirtBlock", "snowBlock", "sandBlock"]
         
         
         super.init()
@@ -29,12 +31,10 @@ class Terrain: SKNode{
     
     
     func generateTerrain(){
-        var blocks = ["dirtBlock", "stoneBlock"]
         for i in 0..<self.blockSize{
             for x in 0..<self.blockSize{
                 if self.terrainData[x][i] != 0{
-                    
-                    let block = SKSpriteNode(imageNamed: blocks[self.terrainData[x][i] - 1])
+                    let block = SKSpriteNode(imageNamed: self.blockTypes[self.terrainData[x][i]])
                     block.position.x = self.position.x + CGFloat(i * self.blockWidth)
                     block.position.y = self.position.y + CGFloat(x * self.blockWidth)
                     block.size.width = CGFloat(self.blockWidth)

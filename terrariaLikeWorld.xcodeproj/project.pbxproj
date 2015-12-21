@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		74356F121C275C3500C6C3DA /* biomes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74356F111C275C3500C6C3DA /* biomes.swift */; };
 		746555231C076B8D005A20BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555221C076B8D005A20BF /* AppDelegate.swift */; };
 		746555251C076B8D005A20BF /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555241C076B8D005A20BF /* GameScene.swift */; };
 		746555271C076B8D005A20BF /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 746555261C076B8D005A20BF /* GameScene.sks */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		74356F111C275C3500C6C3DA /* biomes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = biomes.swift; sourceTree = "<group>"; };
 		7465551F1C076B8D005A20BF /* terrariaLikeWorld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = terrariaLikeWorld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		746555221C076B8D005A20BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		746555241C076B8D005A20BF /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				746555531C07777A005A20BF /* generateTerrainData.swift */,
 				7465554F1C076C13005A20BF /* generateTerrainVisuals.swift */,
 				746555511C077068005A20BF /* terrainFunction.swift */,
+				74356F111C275C3500C6C3DA /* biomes.swift */,
 				746555591C08DEF3005A20BF /* randomNumbers.swift */,
 				746555261C076B8D005A20BF /* GameScene.sks */,
 				746555281C076B8D005A20BF /* Assets.xcassets */,
@@ -277,6 +280,7 @@
 				746555251C076B8D005A20BF /* GameScene.swift in Sources */,
 				746555231C076B8D005A20BF /* AppDelegate.swift in Sources */,
 				746555561C07796F005A20BF /* Camera.swift in Sources */,
+				74356F121C275C3500C6C3DA /* biomes.swift in Sources */,
 				7465555A1C08DEF3005A20BF /* randomNumbers.swift in Sources */,
 				746555541C07777A005A20BF /* generateTerrainData.swift in Sources */,
 				746555581C078001005A20BF /* terrainWorld.swift in Sources */,

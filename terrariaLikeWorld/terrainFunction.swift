@@ -10,53 +10,71 @@ import Foundation
 
 func isValidBlock(x: Int, y: Int) -> Int{
     
-    let height = terrainFunction(x)
-    let shouldBeBlock = terrainHolesFunction(x, y: y)
+    let height = terrainFunction(x, seed: 8, range: 1...8)
+    let humidity = scaleVal(8...8, y: terrainFunction(x, seed: 6, range: 8...8))
+    let temperature = scaleVal(8...8, y: terrainFunction(x, seed: 7, range: 8...8))
+    let roughness = scaleVal(6...8, y: terrainFunction(x, seed: 3, range: 6...8))
+    
+    let scaledHeight = scaleVal(1...8, y: height)
+    
+    let shouldBeBlock = terrainHolesFunction(x, y: y, seed: 1, range: 1...4)
     
     if y > height{
-        if shouldBeBlock >= 0.5 && shouldBeBlock <= 1.0{
-            return determineBlock(x, y: y, seed: 8)
+        if shouldBeBlock >= 0.6 && shouldBeBlock <= 1.0{
+            return determineBlock(x, y: y, seed: 9, heightAtX: height, elevation: scaledHeight, humidity: humidity, temperature: temperature, roughness: roughness)
         }
         return 0
     }
-    if terrainHolesFunction(x, y: y) >= 0.2{
-        return determineBlock(x, y: y, seed: 8)
+    if shouldBeBlock >= roughness * 0.33{
+        return determineBlock(x, y: y, seed: 9, heightAtX: height, elevation: scaledHeight, humidity: humidity, temperature: temperature, roughness: roughness)
     }
     return 0
 }
 
-func terrainFunction(a: Int) -> Int{
+func terrainFunction(a: Int, seed: Int, range: Range<Int>) -> Int{
     
     var total1 = 0
     
-    for i in 1...8{
+    for i in range{
         let pt1 = Int(pow(2.0, Double(i)))
-        total1 += noiseGenerator1d(a, wavelength: pt1, amplitude: pt1 / 2, seed: 8)
+        total1 += noiseGenerator1d(a, wavelength: pt1, amplitude: pt1 / 2, seed: seed)
     }
     
     
     return total1
 }
 
-func determineBlock(x: Int, y: Int, seed: Int) -> Int{
-    var probibality: Double = 0.00005 * Double(y * y) + 0.05
+func scaleVal(range: Range<Int>, y: Int) -> Double{
+    var total = 0
+    for i in range{
+        total += Int(pow(2.0, Double(i - 1)))
+        
+    }
+    return Double(y) / Double(total)
+}
+
+func determineBlock(x: Int, y: Int, seed: Int, heightAtX: Int, elevation: Double, humidity: Double, temperature: Double, roughness: Double) -> Int{
+    let blockTypes = determineBiome(elevation, humidity: humidity, temperature: temperature, roughness: roughness)
+    
+    var probibality: Double = 0.00005 * Double((y - heightAtX) * (y - heightAtX)) + 0.05
     if probibality > 0.95{
         probibality = 0.95
     }
+    
     let randVal = rand(Int64(x * y * seed))
     if randVal <= probibality{
-        return 2
+        return blockTypes[1]
     }
-    return 1
+    return blockTypes[0]
 }
 
-func terrainHolesFunction(x: Int, y: Int) -> Double{
+func terrainHolesFunction(x: Int, y: Int, seed: Int, range: Range<Int>) -> Double{
     var total1 = 0
     var ampSum = 0
     
-    for i in 1..<4{
+    for i in range{
         let pt1 = Int(pow(2.0, Double(i)))
-        total1 += noiseGenerator2d(x, y: y, wavelength: pt1, amplitude: pt1 / 2, seed: 1)
+        total1 += noiseGenerator2d(x, y: y, wavelength: pt1, amplitude: pt1 / 2, seed: seed)
         ampSum += pt1 / 2
     }
     
