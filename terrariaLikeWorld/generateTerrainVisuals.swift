@@ -19,7 +19,7 @@ class Terrain: SKNode{
         self.blockSize = blockSize
         self.blockWidth = blockWidth
         self.terrainData = terrainData
-        self.blockTypes = ["", "stoneBlock", "dirtBlock", "snowBlock", "sandBlock"]
+        self.blockTypes = ["", "stoneBlock", "dirtBlock", "snowBlock", "sandBlock", "waterBlock"]
         
         
         super.init()

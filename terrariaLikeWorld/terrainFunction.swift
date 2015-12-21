@@ -23,6 +23,10 @@ func isValidBlock(x: Int, y: Int) -> Int{
         if shouldBeBlock >= 0.6 && shouldBeBlock <= 1.0{
             return determineBlock(x, y: y, seed: 9, heightAtX: height, elevation: scaledHeight, humidity: humidity, temperature: temperature, roughness: roughness)
         }
+//        if y < 105{
+//            return 5
+//        }
+        
         return 0
     }
     if shouldBeBlock >= roughness * 0.33{
