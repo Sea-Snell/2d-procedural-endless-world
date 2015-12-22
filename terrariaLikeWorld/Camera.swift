@@ -30,17 +30,16 @@ class MyCamera: SKNode{
         fatalError("init(coder:) has not been implemented")
     }
     
-//    func updateYPos(centerPos: CGPoint){
-//        let currentPos = Int((centerPos.x - self.position.x) / CGFloat(self.terrainWorld.blockWidth))
-//        if CGFloat(currentPos) >= self.terrainWorld.start.x && CGFloat(currentPos) < CGFloat(self.terrainWorld.terrainData.count) + self.terrainWorld.start.x{
-//            self.terrainWorld.terrainData[]
-//            let currentHeight = terrainFunction(currentPos, seed: 8, range: 1...8)
-//            let newY = centerPos.y - CGFloat(currentHeight * self.terrainWorld.blockWidth)
-//            self.position.y = newY
-//            //let moveY = SKAction.moveToY(newY, duration: 0.5)
-//            //self.runAction(moveY)
-//        }
-//    }
+    func updateYPos(centerPos: CGPoint){
+        let currentPos = Int((centerPos.x - self.position.x) / CGFloat(self.terrainWorld.blockWidth))
+        if CGFloat(currentPos) >= self.terrainWorld.start.x && CGFloat(currentPos) < CGFloat(self.terrainWorld.terrainData.count) + self.terrainWorld.start.x{
+            let currentHeight = terrainFunction(currentPos, seed: 8, range: 1...8)
+            let newY = centerPos.y - CGFloat(currentHeight * self.terrainWorld.blockWidth)
+            self.position.y = newY
+            //let moveY = SKAction.moveToY(newY, duration: 0.5)
+            //self.runAction(moveY)
+        }
+    }
     
     func endlessTerrain(leftBound: CGFloat, rightBound: CGFloat, topBound: CGFloat, bottomBound: CGFloat){
         if self.terrainWorld.terrain.count > 0{
