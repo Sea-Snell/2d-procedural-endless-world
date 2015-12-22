@@ -49,7 +49,7 @@ class GameScene: SKScene {
             self.myCamera.position.y += 20
         }
         if keys["space"] == true{
-            myCamera.updateYPos(CGPoint(x: self.frame.midX, y: self.frame.midY))
+            //myCamera.updateYPos(CGPoint(x: self.frame.midX, y: self.frame.midY))
         }
         self.myCamera.endlessTerrain(self.frame.minX - 200, rightBound: self.frame.maxX + 200, topBound: self.frame.maxY + 500, bottomBound: self.frame.minY - 500)
     }
@@ -90,6 +90,15 @@ class GameScene: SKScene {
         if(keyCode == 126){
             keys["up"] = false
         }
+    }
+    
+    override func mouseUp(theEvent: NSEvent) {
+        let location = theEvent.locationInNode(self.myCamera.terrainWorld)
+        let currentPosX = Int(location.x - self.myCamera.terrainWorld.point.x) / Int(self.myCamera.terrainWorld.blockWidth)
+        let currentPosY = Int(location.y - self.myCamera.terrainWorld.point.y) / Int(self.myCamera.terrainWorld.blockWidth)
+        
+        let block = self.myCamera.terrainWorld.terrainData[currentPosX][currentPosY].biome!.realBlock
+        print(block!.type, block?.leftConnection?.biome?.realBlock?.type, block?.rightConnection?.biome?.realBlock?.type, block?.upConnection?.biome?.realBlock?.type, block?.rightConnection?.biome?.realBlock?.type)
     }
     
     

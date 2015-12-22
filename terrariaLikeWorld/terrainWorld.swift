@@ -13,7 +13,7 @@ class TerrainWorld: SKNode{
     var blockSize: Int
     var blockWidth: Int
     var terrain: [[Terrain]]
-    var terrainData: [[Int]]
+    var terrainData: [[Block]]
     var start: CGPoint
     var point: CGPoint
     
@@ -58,8 +58,28 @@ class TerrainWorld: SKNode{
             }
         }
         
-        self.findWater(0..<self.terrainData.count, range2: self.terrainData.count - 2..<self.terrainData.count)
+        for i in 0..<self.terrainData.count{
+            for x in 0..<self.terrainData[0].count{
+                if i + 1 < self.terrainData.count - 1{
+                   self.terrainData[i][x].biome?.realBlock?.upConnection = self.terrainData[i + 1][x]
+                }
+                if i - 1 >= 0{
+                    self.terrainData[i][x].biome?.realBlock?.downConnection = self.terrainData[i - 1][x]
+                }
+                if x - 1 >= 0{
+                    self.terrainData[i][x].biome?.realBlock?.leftConnection = self.terrainData[i][x - 1]
+                }
+                if x + 1 < self.terrainData[0].count - 1{
+                    self.terrainData[i][x].biome?.realBlock?.rightConnection = self.terrainData[i][x + 1]
+                }
+            }
+        }
         
+        for i in 0..<self.terrainData.count{
+            for x in 0..<self.terrainData[i].count{
+                self.terrainData[i][x].biome?.realBlock?.update()
+            }
+        }
         
         for i in 0..<colSize{
             let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: self.array2dSplice(self.terrainData, range1: i * self.blockSize..<(i + 1) * self.blockSize, range2: self.terrainData[0].count - self.blockSize..<self.terrainData[0].count))
@@ -89,6 +109,7 @@ class TerrainWorld: SKNode{
                 self.terrain.append([])
             }
         }
+        
         for i in 0..<colSize{
             let blockPos = CGPoint(x: CGFloat(blockX), y: self.start.y + CGFloat(i * self.blockSize))
             let data = generateTerrainData(blockPos, blockSize: self.blockSize)
@@ -98,7 +119,28 @@ class TerrainWorld: SKNode{
             }
         }
         
-        self.findWater(0..<self.terrainData.count, range2: 0..<2)
+        for i in 0..<self.terrainData.count{
+            for x in 0..<self.terrainData[0].count{
+                if i + 1 < self.terrainData.count - 1{
+                    self.terrainData[i][x].biome?.realBlock?.upConnection = self.terrainData[i + 1][x]
+                }
+                if i - 1 >= 0{
+                    self.terrainData[i][x].biome?.realBlock?.downConnection = self.terrainData[i - 1][x]
+                }
+                if x - 1 >= 0{
+                    self.terrainData[i][x].biome?.realBlock?.leftConnection = self.terrainData[i][x - 1]
+                }
+                if x + 1 < self.terrainData[0].count - 1{
+                    self.terrainData[i][x].biome?.realBlock?.rightConnection = self.terrainData[i][x + 1]
+                }
+            }
+        }
+        
+        for i in 0..<self.terrainData.count{
+            for x in 0..<self.terrainData[i].count{
+                self.terrainData[i][x].biome?.realBlock?.update()
+            }
+        }
         
         
         for i in 0..<colSize{
@@ -136,7 +178,28 @@ class TerrainWorld: SKNode{
             }
         }
         
-        self.findWater(self.terrainData.count - 2..<self.terrainData.count, range2: 0..<self.terrainData[0].count)
+        for i in 0..<self.terrainData.count{
+            for x in 0..<self.terrainData[0].count{
+                if i + 1 < self.terrainData.count - 1{
+                    self.terrainData[i][x].biome?.realBlock?.upConnection = self.terrainData[i + 1][x]
+                }
+                if i - 1 >= 0{
+                    self.terrainData[i][x].biome?.realBlock?.downConnection = self.terrainData[i - 1][x]
+                }
+                if x - 1 >= 0{
+                    self.terrainData[i][x].biome?.realBlock?.leftConnection = self.terrainData[i][x - 1]
+                }
+                if x + 1 < self.terrainData[0].count - 1{
+                    self.terrainData[i][x].biome?.realBlock?.rightConnection = self.terrainData[i][x + 1]
+                }
+            }
+        }
+        
+        for i in 0..<self.terrainData.count{
+            for x in 0..<self.terrainData[i].count{
+                self.terrainData[i][x].biome?.realBlock?.update()
+            }
+        }
         
         
         for i in 0..<rowSize{
@@ -175,7 +238,28 @@ class TerrainWorld: SKNode{
             }
         }
         
-        self.findWater(0..<2, range2: 0..<self.terrainData[0].count)
+        for i in 0..<self.terrainData.count{
+            for x in 0..<self.terrainData[0].count{
+                if i + 1 < self.terrainData.count - 1{
+                    self.terrainData[i][x].biome?.realBlock?.upConnection = self.terrainData[i + 1][x]
+                }
+                if i - 1 >= 0{
+                    self.terrainData[i][x].biome?.realBlock?.downConnection = self.terrainData[i - 1][x]
+                }
+                if x - 1 >= 0{
+                    self.terrainData[i][x].biome?.realBlock?.leftConnection = self.terrainData[i][x - 1]
+                }
+                if x + 1 < self.terrainData[0].count - 1{
+                    self.terrainData[i][x].biome?.realBlock?.rightConnection = self.terrainData[i][x + 1]
+                }
+            }
+        }
+        
+        for i in 0..<self.terrainData.count{
+            for x in 0..<self.terrainData[i].count{
+                self.terrainData[i][x].biome?.realBlock?.update()
+            }
+        }
         
         for i in 0..<rowSize{
             let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: self.array2dSplice(self.terrainData, range1: 0..<self.blockSize, range2: i * self.blockSize..<(i + 1) * self.blockSize))
@@ -229,36 +313,8 @@ class TerrainWorld: SKNode{
         self.terrain.removeLast()
     }
     
-    func findWater(range1: Range<Int>, range2: Range<Int>){
-        for i in range1{
-            for x in range2{
-                if i < self.terrainData.count && i >= 0 && x < self.terrainData[0].count && x > 0{
-                    if self.terrainData[i][x] == 5{
-                        self.processWater([i, x])
-                    }
-                }
-            }
-        }
-    }
-    
-    func processWater(pos: [Int]){
-        let moves = [[-1, 0], [0, -1], [0, 1]]
-        if pos[0] + moves[0][0] >= 0 && pos[0] + moves[0][0] < self.terrainData.count && pos[1] + moves[0][1] >= 0 && pos[1] + moves[0][1] < self.terrainData[0].count && self.terrainData[pos[0] + moves[0][0]][pos[1] + moves[0][1]] == 0{
-            self.terrainData[pos[0] + moves[0][0]][pos[1] + moves[0][1]] = 5
-            self.processWater([pos[0] + moves[0][0], pos[1] + moves[0][1]])
-        }
-        else{
-            for i in 1..<moves.count{
-                if pos[0] + moves[i][0] >= 0 && pos[0] + moves[i][0] < self.terrainData.count && pos[1] + moves[i][1] >= 0 && pos[1] + moves[i][1] < self.terrainData[0].count && self.terrainData[pos[0] + moves[i][0]][pos[1] + moves[i][1]] == 0{
-                    self.terrainData[pos[0] + moves[i][0]][pos[1] + moves[i][1]] = 5
-                    self.processWater([pos[0] + moves[i][0], pos[1] + moves[i][1]])
-                }
-            }
-        }
-    }
-    
-    func array2dSplice(array: [[Int]], range1: Range<Int>, range2: Range<Int>) -> [[Int]]{
-        var newArray: [[Int]] = []
+    func array2dSplice(array: [[Block]], range1: Range<Int>, range2: Range<Int>) -> [[Block]]{
+        var newArray: [[Block]] = []
         for i in range1{
             newArray.append([])
             for x in range2{
