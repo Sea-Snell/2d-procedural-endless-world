@@ -65,7 +65,6 @@ class TerrainWorld: SKNode{
             
             self.terrain[i].append(terrainVal)
         }
-        self.dataGenerator.memo = [:]
     }
     
     
@@ -101,7 +100,6 @@ class TerrainWorld: SKNode{
             self.terrain[i].insert(terrainVal, atIndex: 0)
 
         }
-        self.dataGenerator.memo = [:]
     }
     
     func addBlockRowTop(rowSize: Int){
@@ -131,7 +129,6 @@ class TerrainWorld: SKNode{
             
             self.terrain[self.terrain.count - 1].append(terrainVal)
         }
-        self.dataGenerator.memo = [:]
     }
     
     func addBlockRowBottom(rowSize: Int){
@@ -162,7 +159,6 @@ class TerrainWorld: SKNode{
             
             self.terrain[0].append(terrainVal)
         }
-        self.dataGenerator.memo = [:]
     }
     
     func removeBlockColLeft(){

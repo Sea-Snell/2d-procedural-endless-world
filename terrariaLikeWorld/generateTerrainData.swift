@@ -33,6 +33,9 @@ class GenerateTerrainData{
     }
     
     func isWater(x: Int, y: Int, blockType: Int, last: String? = nil) -> Bool{
+        if self.memo.count > 100000{
+            self.memo = [:]
+        }
         var val: Bool = false
         if blockType != 0 || y > terrainFunction(x, seed: 8, range: 1...8){
             if blockType == 5{
@@ -48,17 +51,13 @@ class GenerateTerrainData{
         else{
             val = self.isWater(x, y: y + 1, blockType: isValidBlock(x, y: y + 1), last: "\(x) \(y)")
             if val == false{
-                let bottomRight = isValidBlock(x + 1, y: y - 1)
-                let bottomLeft = isValidBlock(x - 1, y: y - 1)
-                if bottomLeft != 0 && bottomLeft != 5{
-                    if "\(x - 1) \(y)" != last{
-                        val = self.isWater(x - 1, y: y, blockType: isValidBlock(x - 1, y: y), last: "\(x) \(y)")
-                    }
+                if "\(x - 1) \(y)" != last{
+                    val = self.isWater(x - 1, y: y, blockType: isValidBlock(x - 1, y: y), last: "\(x) \(y)")
                 }
-                if bottomRight != 0 && bottomRight != 5 && val == false{
-                    if "\(x + 1) \(y)" != last{
-                        val = self.isWater(x + 1, y: y, blockType: isValidBlock(x + 1, y: y), last: "\(x) \(y)")
-                    }
+            }
+            if val == false{
+                if "\(x + 1) \(y)" != last{
+                    val = self.isWater(x + 1, y: y, blockType: isValidBlock(x + 1, y: y), last: "\(x) \(y)")
                 }
             }
         }
