@@ -16,6 +16,7 @@ class TerrainWorld: SKNode{
     var terrainData: [[Int]]
     var start: CGPoint
     var point: CGPoint
+    var dataGenerator: GenerateTerrainData
     
     override init() {
         self.start = CGPoint(x: 0, y: 0)
@@ -24,6 +25,7 @@ class TerrainWorld: SKNode{
         self.terrainData = []
         self.terrain = []
         self.point = CGPoint(x: 0, y: 0)
+        self.dataGenerator = GenerateTerrainData()
         
         super.init()
         
@@ -51,7 +53,7 @@ class TerrainWorld: SKNode{
         
         for i in 0..<colSize{
             let blockPos = CGPoint(x: CGFloat(blockX), y: self.start.y + CGFloat(i * self.blockSize))
-            let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: generateTerrainData(blockPos, blockSize: self.blockSize))
+            let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: self.dataGenerator.generateTerrainData(blockPos, blockSize: self.blockSize))
             terrainVal.generateTerrain()
             terrainVal.position.x = self.point.x + (CGFloat(blockX) - self.start.x) * CGFloat(self.blockWidth)
             terrainVal.position.y = self.point.y + CGFloat(i * self.blockSize * self.blockWidth)
@@ -63,6 +65,7 @@ class TerrainWorld: SKNode{
             
             self.terrain[i].append(terrainVal)
         }
+        self.dataGenerator.memo = [:]
     }
     
     
@@ -85,7 +88,7 @@ class TerrainWorld: SKNode{
         
         for i in 0..<colSize{
             let blockPos = CGPoint(x: CGFloat(blockX), y: self.start.y + CGFloat(i * self.blockSize))
-            let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: generateTerrainData(blockPos, blockSize: self.blockSize))
+            let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: self.dataGenerator.generateTerrainData(blockPos, blockSize: self.blockSize))
             terrainVal.generateTerrain()
             terrainVal.position.x = self.point.x
             terrainVal.position.y = self.point.y + CGFloat(i * self.blockSize * self.blockWidth)
@@ -98,6 +101,7 @@ class TerrainWorld: SKNode{
             self.terrain[i].insert(terrainVal, atIndex: 0)
 
         }
+        self.dataGenerator.memo = [:]
     }
     
     func addBlockRowTop(rowSize: Int){
@@ -115,7 +119,7 @@ class TerrainWorld: SKNode{
         
         for i in 0..<rowSize{
             let blockPos = CGPoint(x: self.start.x + CGFloat(i * self.blockSize), y: CGFloat(blockY))
-            let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: generateTerrainData(blockPos, blockSize: self.blockSize))
+            let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: self.dataGenerator.generateTerrainData(blockPos, blockSize: self.blockSize))
             terrainVal.generateTerrain()
             terrainVal.position.x = self.point.x + CGFloat(i * self.blockSize * self.blockWidth)
             terrainVal.position.y = self.point.y + (CGFloat(blockY) - self.start.y) * CGFloat(self.blockWidth)
@@ -127,6 +131,7 @@ class TerrainWorld: SKNode{
             
             self.terrain[self.terrain.count - 1].append(terrainVal)
         }
+        self.dataGenerator.memo = [:]
     }
     
     func addBlockRowBottom(rowSize: Int){
@@ -145,7 +150,7 @@ class TerrainWorld: SKNode{
         
         for i in 0..<rowSize{
             let blockPos = CGPoint(x: self.start.x + CGFloat(i * self.blockSize), y: CGFloat(blockY))
-            let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: generateTerrainData(blockPos, blockSize: self.blockSize))
+            let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: self.dataGenerator.generateTerrainData(blockPos, blockSize: self.blockSize))
             terrainVal.generateTerrain()
             terrainVal.position.x = self.point.x + CGFloat(i * self.blockSize * self.blockWidth)
             terrainVal.position.y = self.point.y
@@ -157,6 +162,7 @@ class TerrainWorld: SKNode{
             
             self.terrain[0].append(terrainVal)
         }
+        self.dataGenerator.memo = [:]
     }
     
     func removeBlockColLeft(){
