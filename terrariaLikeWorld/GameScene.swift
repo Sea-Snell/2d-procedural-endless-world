@@ -49,7 +49,7 @@ class GameScene: SKScene {
             self.myCamera.position.y += 20
         }
         if keys["space"] == true{
-            myCamera.updateYPos(CGPoint(x: self.frame.midX, y: self.frame.midY))
+            //myCamera.updateYPos(CGPoint(x: self.frame.midX, y: self.frame.midY))
         }
         self.myCamera.endlessTerrain(self.frame.minX - 200, rightBound: self.frame.maxX + 200, topBound: self.frame.maxY + 500, bottomBound: self.frame.minY - 500)
     }
