@@ -10,6 +10,6 @@ import Foundation
 
 class Snow: Block{
     init(x: Int, y: Int){
-        super.init(x: x, y: y, asset: "snowBlock")
+        super.init(x: x, y: y, asset: "snowBlock", visible: true)
     }
 }

@@ -13,7 +13,7 @@ class TerrainWorld: SKNode{
     var blockSize: Int
     var blockWidth: Int
     var terrain: [[Terrain]]
-    var terrainData: [[Biome]]
+    var terrainData: [[Block]]
     var start: CGPoint
     var point: CGPoint
     var dataGenerator: GenerateTerrainData

@@ -15,10 +15,10 @@ class GenerateTerrainData{
         self.memo = [:]
     }
     
-    func generateTerrainData(leftPos: CGPoint, blockSize: Int) -> [[Biome]]{
-        var terrainData: [[Biome]] = []
+    func generateTerrainData(leftPos: CGPoint, blockSize: Int) -> [[Block]]{
+        var terrainData: [[Block]] = []
         for x in Int(leftPos.y)..<Int(leftPos.y) + blockSize{
-            var temp: [Biome] = []
+            var temp: [Block] = []
             for i in Int(leftPos.x)..<Int(leftPos.x) + blockSize{
                 let block = isValidBlock(i, y: x)
                 //if isWater(i, y: x, blockType: block) == true{

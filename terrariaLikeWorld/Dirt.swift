@@ -10,6 +10,6 @@ import Foundation
 
 class Dirt: Block{
     init(x: Int, y: Int){
-        super.init(x: x, y: y, asset: "dirtBlock")
+        super.init(x: x, y: y, asset: "dirtBlock", visible: true)
     }
 }

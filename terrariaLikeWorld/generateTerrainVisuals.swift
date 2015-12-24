@@ -11,10 +11,10 @@ import SpriteKit
 
 class Terrain: SKNode{
     var blockSize: Int
-    var terrainData: [[Biome]]
+    var terrainData: [[Block]]
     var blockWidth: Int
     
-    init(blockSize: Int, blockWidth: Int, terrainData: [[Biome]]) {
+    init(blockSize: Int, blockWidth: Int, terrainData: [[Block]]) {
         self.blockSize = blockSize
         self.blockWidth = blockWidth
         self.terrainData = terrainData
@@ -32,7 +32,7 @@ class Terrain: SKNode{
         for i in 0..<self.blockSize{
             for x in 0..<self.blockSize{
                 if self.terrainData[x][i].visible == true{
-                    let block = SKSpriteNode(imageNamed: self.terrainData[x][i].block!.asset)
+                    let block = SKSpriteNode(imageNamed: self.terrainData[x][i].asset)
                     block.position.x = self.position.x + CGFloat(i * self.blockWidth)
                     block.position.y = self.position.y + CGFloat(x * self.blockWidth)
                     block.size.width = CGFloat(self.blockWidth)

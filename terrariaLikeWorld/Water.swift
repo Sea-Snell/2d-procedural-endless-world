@@ -10,6 +10,6 @@ import Foundation
 
 class Water: Block{
     init(x: Int, y: Int){
-        super.init(x: x, y: y, asset: "waterBlock")
+        super.init(x: x, y: y, asset: "waterBlock", visible: true)
     }
 }

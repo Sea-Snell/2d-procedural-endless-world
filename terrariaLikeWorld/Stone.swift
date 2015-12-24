@@ -10,6 +10,6 @@ import Foundation
 
 class Stone: Block{
     init(x: Int, y: Int){
-        super.init(x: x, y: y, asset: "stoneBlock")
+        super.init(x: x, y: y, asset: "stoneBlock", visible: true)
     }
 }

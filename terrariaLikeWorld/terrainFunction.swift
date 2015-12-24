@@ -8,7 +8,7 @@
 
 import Foundation
 
-func isValidBlock(x: Int, y: Int) -> Biome{
+func isValidBlock(x: Int, y: Int) -> Block{
     
     let height = terrainFunction(x, seed: 8, range: 1...8)
     let humidity = scaleVal(8...8, y: terrainFunction(x, seed: 6, range: 8...8))
@@ -21,14 +21,14 @@ func isValidBlock(x: Int, y: Int) -> Biome{
     
     if y > height{
         if shouldBeBlock >= 0.6 && shouldBeBlock <= 1.0{
-            return stringToBiomeObject(x, y: y, heightAtX: height, name: determineBiome(scaledHeight, humidity: humidity, temperature: temperature, roughness: roughness), visible: true)
+            return stringToBlockObject(x, y: y, heightAtX: height, name: determineBiome(scaledHeight, humidity: humidity, temperature: temperature, roughness: roughness), visible: true)
         }
-        return stringToBiomeObject(x, y: y, heightAtX: height)
+        return stringToBlockObject(x, y: y, heightAtX: height)
     }
     if shouldBeBlock >= roughness * 0.33{
-        return stringToBiomeObject(x, y: y, heightAtX: height, name: determineBiome(scaledHeight, humidity: humidity, temperature: temperature, roughness: roughness), visible: true)
+        return stringToBlockObject(x, y: y, heightAtX: height, name: determineBiome(scaledHeight, humidity: humidity, temperature: temperature, roughness: roughness), visible: true)
     }
-    return stringToBiomeObject(x, y: y, heightAtX: height)
+    return stringToBlockObject(x, y: y, heightAtX: height)
 }
 
 func terrainFunction(a: Int, seed: Int, range: Range<Int>) -> Int{

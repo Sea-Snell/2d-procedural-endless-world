@@ -12,10 +12,12 @@ class Block{
     var asset: String
     var x: Int
     var y: Int
+    var visible: Bool
     
-    init(x: Int, y: Int, asset: String){
+    init(x: Int, y: Int, asset: String, visible: Bool){
         self.x = x
         self.y = y
         self.asset = asset
+        self.visible = visible
     }
 }

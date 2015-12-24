@@ -15,7 +15,6 @@ class Biome{
     var heightAtX: Int
     var x: Int
     var y: Int
-    var block: Block?
     var visible: Bool
     
     init(x: Int, y: Int, primaryAsset: String, secondaryAsset: String, liquidAsset: String, heightAtX: Int, visible: Bool){
@@ -25,14 +24,12 @@ class Biome{
         self.secondaryAsset = secondaryAsset
         self.liquidAsset = liquidAsset
         self.heightAtX = heightAtX
-        self.block = nil
         self.visible = visible
-        self.block = self.determineBlock()
     }
     
     func determineBlock() -> Block?{
         if visible == false{
-            return Block(x: self.x, y: self.y, asset: "")
+            return Block(x: self.x, y: self.y, asset: "", visible: false)
         }
         
         var probibality: Double = 0.00005 * Double((self.y - self.heightAtX) * (self.y - self.heightAtX)) + 0.05

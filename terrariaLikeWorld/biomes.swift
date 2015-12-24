@@ -28,17 +28,22 @@ func determineBiome(elevation: Double, humidity: Double, temperature: Double, ro
     return String(biome["name"]!)
 }
 
-func stringToBiomeObject(x: Int, y: Int, heightAtX: Int, name: String = "", visible: Bool = false) -> Biome{
+func stringToBlockObject(x: Int, y: Int, heightAtX: Int, name: String = "", visible: Bool = false) -> Block{
+    var biome: Biome? = nil
     switch(name){
         case "desert":
-            return Desert(x: x, y: y, heightAtX: heightAtX, visible: visible)
+            biome =  Desert(x: x, y: y, heightAtX: heightAtX, visible: visible)
+            return (biome?.determineBlock())!
         case "mountains":
-            return Mountains(x: x, y: y, heightAtX: heightAtX, visible: visible)
+            biome =  Mountains(x: x, y: y, heightAtX: heightAtX, visible: visible)
+            return (biome?.determineBlock())!
         case "hills":
-            return Hills(x: x, y: y, heightAtX: heightAtX, visible: visible)
+            biome =  Hills(x: x, y: y, heightAtX: heightAtX, visible: visible)
+            return (biome?.determineBlock())!
         case "tundra":
-            return Tundra(x: x, y: y, heightAtX: heightAtX, visible: visible)
+            biome =  Tundra(x: x, y: y, heightAtX: heightAtX, visible: visible)
+            return (biome?.determineBlock())!
         default:
-            return Biome(x: x, y: y, primaryAsset: "", secondaryAsset: "", liquidAsset: "", heightAtX: heightAtX, visible: false)
+            return Block(x: x, y: y, asset: "", visible: false)
     }
 }
