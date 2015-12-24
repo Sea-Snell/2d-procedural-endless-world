@@ -8,7 +8,7 @@
 
 import Foundation
 
-func isValidBlock(x: Int, y: Int) -> Int{
+func isValidBlock(x: Int, y: Int) -> Biome{
     
     let height = terrainFunction(x, seed: 8, range: 1...8)
     let humidity = scaleVal(8...8, y: terrainFunction(x, seed: 6, range: 8...8))
@@ -21,17 +21,14 @@ func isValidBlock(x: Int, y: Int) -> Int{
     
     if y > height{
         if shouldBeBlock >= 0.6 && shouldBeBlock <= 1.0{
-            return determineBlock(x, y: y, seed: 9, heightAtX: height, elevation: scaledHeight, humidity: humidity, temperature: temperature, roughness: roughness)
+            return stringToBiomeObject(x, y: y, heightAtX: height, name: determineBiome(scaledHeight, humidity: humidity, temperature: temperature, roughness: roughness), visible: true)
         }
-        if y < 105{
-            return 5
-        }
-        return 0
+        return stringToBiomeObject(x, y: y, heightAtX: height)
     }
     if shouldBeBlock >= roughness * 0.33{
-        return determineBlock(x, y: y, seed: 9, heightAtX: height, elevation: scaledHeight, humidity: humidity, temperature: temperature, roughness: roughness)
+        return stringToBiomeObject(x, y: y, heightAtX: height, name: determineBiome(scaledHeight, humidity: humidity, temperature: temperature, roughness: roughness), visible: true)
     }
-    return 0
+    return stringToBiomeObject(x, y: y, heightAtX: height)
 }
 
 func terrainFunction(a: Int, seed: Int, range: Range<Int>) -> Int{
@@ -54,21 +51,6 @@ func scaleVal(range: Range<Int>, y: Int) -> Double{
         
     }
     return Double(y) / Double(total)
-}
-
-func determineBlock(x: Int, y: Int, seed: Int, heightAtX: Int, elevation: Double, humidity: Double, temperature: Double, roughness: Double) -> Int{
-    let blockTypes = determineBiome(elevation, humidity: humidity, temperature: temperature, roughness: roughness)
-    
-    var probibality: Double = 0.00005 * Double((y - heightAtX) * (y - heightAtX)) + 0.05
-    if probibality > 0.95{
-        probibality = 0.95
-    }
-    
-    let randVal = rand(Int64(x * y * seed))
-    if randVal <= probibality{
-        return blockTypes[1]
-    }
-    return blockTypes[0]
 }
 
 func terrainHolesFunction(x: Int, y: Int, seed: Int, range: Range<Int>) -> Double{

@@ -8,38 +8,37 @@
 
 import Foundation
 
-class Biome{
-    var mainAsset: Int
-    var secondaryAsset: Int
-    var elevation: Double
-    var humidity: Double
-    var temperature: Double
-    var roughness: Double
-    var name: String
-    
-    init(mainAsset: Int, secondaryAsset: Int, elevation: Double, humidity: Double, temperature: Double, roughness: Double, name: String){
-        self.mainAsset = mainAsset
-        self.secondaryAsset = secondaryAsset
-        self.elevation = elevation
-        self.humidity = humidity
-        self.temperature = temperature
-        self.roughness = roughness
-        self.name = name
-    }
-}
-
-func determineBiome(elevation: Double, humidity: Double, temperature: Double, roughness: Double) -> [Int]{
+func determineBiome(elevation: Double, humidity: Double, temperature: Double, roughness: Double) -> String{
     var best = 10.0
-    var biome: Biome? = nil
-    let biomes = [Biome(mainAsset: 1, secondaryAsset: 1, elevation: 1.0, humidity: 1.0, temperature: 0.5, roughness: 1.0, name: "mountains"), Biome(mainAsset: 2, secondaryAsset: 1, elevation: 1.0, humidity: 0.5, temperature: 1.0, roughness: 0.5, name: "hills"), Biome(mainAsset: 4, secondaryAsset: 1, elevation: 0.5, humidity: 0.0, temperature: 1.0, roughness: 0.0, name: "desert"), Biome(mainAsset: 3, secondaryAsset: 1, elevation: 0.5, humidity: 0.0, temperature: 0.0, roughness: 0.5, name: "tundra")]
+    var biome: [String: Any] = [:]
+    let biomes: [[String: Any]] = [["elevation": 1.0, "humidity": 1.0, "temperature": 0.5, "roughness": 1.0, "name": "mountains"], ["elevation": 1.0, "humidity": 0.5, "temperature": 1.0, "roughness": 0.5, "name": "hills"], ["elevation": 0.5, "humidity": 0.0, "temperature": 1.0, "roughness": 0.0, "name": "desert"], ["elevation": 0.5, "humidity": 0.0, "temperature": 0.0, "roughness": 0.5, "name": "tundra"]]
     
     for i in biomes{
-        let diff = abs(i.elevation - elevation) + abs(i.humidity - humidity) + abs(i.temperature - temperature) + abs(i.roughness - roughness)
+        let a = abs((i["elevation"] as! Double) - elevation)
+        let b = abs((i["humidity"]as! Double) - humidity)
+        let c = abs((i["temperature"] as! Double) - temperature)
+        let d = abs((i["roughness"] as! Double) - roughness)
+        let diff = a + b + c + d
         if diff < best{
             best = diff
             biome = i
         }
     }
     
-    return [biome!.mainAsset, biome!.secondaryAsset]
+    return String(biome["name"]!)
+}
+
+func stringToBiomeObject(x: Int, y: Int, heightAtX: Int, name: String = "", visible: Bool = false) -> Biome{
+    switch(name){
+        case "desert":
+            return Desert(x: x, y: y, heightAtX: heightAtX, visible: visible)
+        case "mountains":
+            return Mountains(x: x, y: y, heightAtX: heightAtX, visible: visible)
+        case "hills":
+            return Hills(x: x, y: y, heightAtX: heightAtX, visible: visible)
+        case "tundra":
+            return Tundra(x: x, y: y, heightAtX: heightAtX, visible: visible)
+        default:
+            return Biome(x: x, y: y, primaryAsset: "", secondaryAsset: "", liquidAsset: "", heightAtX: heightAtX, visible: false)
+    }
 }
