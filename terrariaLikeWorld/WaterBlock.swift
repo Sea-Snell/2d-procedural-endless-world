@@ -1,5 +1,5 @@
 //
-//  Snow.swift
+//  Water.swift
 //  terrariaLikeWorld
 //
 //  Created by Charlie Snell on 12/23/15.
@@ -8,8 +8,8 @@
 
 import Foundation
 
-class Snow: Block{
+class WaterBlock: Block{
     init(x: Int, y: Int){
-        super.init(x: x, y: y, asset: "snowBlock", visible: true)
+        super.init(x: x, y: y, asset: "waterBlock", visible: true)
     }
 }

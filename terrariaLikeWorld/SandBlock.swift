@@ -8,8 +8,9 @@
 
 import Foundation
 
-class Sand: Block{
+class SandBlock: Block{
     init(x: Int, y: Int){
         super.init(x: x, y: y, asset: "sandBlock", visible: true)
     }
 }
+

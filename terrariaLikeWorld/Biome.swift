@@ -48,15 +48,15 @@ class Biome{
     func stringToObject(asset: String) -> Block?{
         switch(asset){
             case "sandBlock":
-                return Sand(x: self.x, y: self.y)
+                return SandBlock(x: self.x, y: self.y)
             case "snowBlock":
-                return Snow(x: self.x, y: self.y)
+                return SnowBlock(x: self.x, y: self.y)
             case "dirtBlock":
-                return Dirt(x: self.x, y: self.y)
+                return DirtBlock(x: self.x, y: self.y)
             case "stoneBlock":
-                return Stone(x: self.x, y: self.y)
+                return StoneBlock(x: self.x, y: self.y)
             case "waterBlock":
-                return Water(x: self.x, y: self.y)
+                return WaterBlock(x: self.x, y: self.y)
             default:
                 return nil
         }

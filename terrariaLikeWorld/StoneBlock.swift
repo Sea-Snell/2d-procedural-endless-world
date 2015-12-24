@@ -1,5 +1,5 @@
 //
-//  Dirt.swift
+//  Stone.swift
 //  terrariaLikeWorld
 //
 //  Created by Charlie Snell on 12/23/15.
@@ -8,8 +8,8 @@
 
 import Foundation
 
-class Dirt: Block{
+class StoneBlock: Block{
     init(x: Int, y: Int){
-        super.init(x: x, y: y, asset: "dirtBlock", visible: true)
+        super.init(x: x, y: y, asset: "stoneBlock", visible: true)
     }
 }
