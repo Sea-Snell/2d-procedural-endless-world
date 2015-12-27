@@ -9,17 +9,10 @@
 import Foundation
 
 class GenerateTerrainData{
-    var memo: [String: Bool]
-    var desert: Desert
-    var hill: Hills
-    var tundra: Tundra
+    //var memo: [String: Bool]
     
     init(){
-        self.desert = Desert(x: 0, y: 0, heightAtX: 0, visible: false)
-        self.hill = Hills(x: 0, y: 0, heightAtX: 0, visible: false)
-        self.tundra = Tundra(x: 0, y: 0, heightAtX: 0, visible: false)
-        self.memo = [:]
-        
+        //self.memo = [:]
     }
     
     func generateTerrainData(leftPos: CGPoint, blockSize: Int) -> [[Block]]{
@@ -39,47 +32,111 @@ class GenerateTerrainData{
         return terrainData
     }
     
-    func determineBiome(elevation: Double, humidity: Double, temperature: Double, roughness: Double) -> String{
-        var best = 10.0
-        var biome: [String: Any] = [:]
-        let biomes: [[String: Any]] = [["elevation": 1.0, "humidity": 0.5, "temperature": 1.0, "roughness": 0.5, "name": "hills"], ["elevation": 0.5, "humidity": 0.0, "temperature": 1.0, "roughness": 0.0, "name": "desert"], ["elevation": 0.5, "humidity": 0.0, "temperature": 0.0, "roughness": 0.5, "name": "tundra"]]
+    func determineBlock(heightAtX: Int, x: Int, y: Int, temperature: Double) -> String{
+        var probability = ["soneBlock": 0.0, "dirtBlock": 0.0, "snowBlock": 0.0, "sandBlock": 0.0]
         
-        for i in biomes{
-            let a = abs((i["elevation"] as! Double) - elevation)
-            let b = abs((i["humidity"]as! Double) - humidity)
-            let c = abs((i["temperature"] as! Double) - temperature)
-            let d = abs((i["roughness"] as! Double) - roughness)
-            let diff = a + b + c + d
-            if diff < best{
-                best = diff
-                biome = i
-            }
+        var snowProbability = -30 * (temperature - 0.333) * (temperature - 0.333) * (temperature - 0.333)
+        if snowProbability < 0{
+            snowProbability = 0
         }
-        return String(biome["name"]!)
+        if snowProbability > 1{
+            snowProbability = 1
+        }
+        
+        var sandProbability = 100 * (temperature - 0.4) * (temperature - 0.4) * (temperature - 0.4) * (temperature - 0.4) * (temperature - 0.4)
+        if sandProbability < 0{
+            sandProbability = 0
+        }
+        if sandProbability > 1{
+            sandProbability = 1
+        }
+        
+        var dirtProbability = -25 * (temperature - 0.5) * (temperature - 0.5) + 0.8
+        if dirtProbability < 0{
+            dirtProbability = 0
+        }
+        if dirtProbability > 1{
+            dirtProbability = 1
+        }
+        
+        var snowWeight = 0.00002 * Double((y - heightAtX + 30) * (y - heightAtX + 30) * (y - heightAtX + 30)) + 0.5
+        if snowWeight < 0.005{
+            snowWeight = 0.005
+        }
+        if snowWeight > 0.995{
+            snowWeight = 0.995
+        }
+        
+        var sandWeight = 0.0005 * Double((y - heightAtX + 10) * (y - heightAtX + 10) * (y - heightAtX + 10)) + 1.0
+        if sandWeight < 0.005{
+            sandWeight = 0.005
+        }
+        if sandWeight > 0.995{
+            sandWeight = 0.995
+        }
+        
+        var dirtWeight = 0.0000001 * Double((y - heightAtX + 20) * (y - heightAtX + 20) * (y - heightAtX + 20) * (y - heightAtX + 20) * (y - heightAtX + 20)) + 0.6
+        if dirtWeight < 0.005{
+            dirtWeight = 0.005
+        }
+        if dirtWeight > 0.995{
+            dirtWeight = 0.995
+        }
+        
+        var stoneWeight = -0.001 * Double((y - heightAtX + 10) * (y - heightAtX + 10) * (y - heightAtX + 10)) + 0.1
+        if stoneWeight < 0.005{
+            stoneWeight = 0.005
+        }
+        if stoneWeight > 0.995{
+            stoneWeight = 0.995
+        }
+        
+        let sandFinalProb = sandProbability * sandWeight
+        let dirtFinalProb = dirtProbability * dirtWeight
+        let snowFinalProb = snowProbability * snowWeight
+        let stoneFinalProb = stoneWeight
+        
+        
+//        var stoneProbability = 0.0002 * Double((y - heightAtX) * (y - heightAtX)) + 0.02
+//        if stoneProbability < 0{
+//            stoneProbability = 0
+//        }
+//        if stoneProbability > 1{
+//            stoneProbability = 1
+//        }
+        
+        
+        
+        
+        probability["snowBlock"] = snowFinalProb / (sandFinalProb + snowFinalProb + stoneFinalProb + dirtFinalProb)
+        probability["sandBlock"] = sandFinalProb / (sandFinalProb + snowFinalProb + stoneFinalProb + dirtFinalProb)
+        probability["dirtBlock"] = dirtFinalProb / (sandFinalProb + snowFinalProb + stoneFinalProb + dirtFinalProb)
+        probability["stoneBlock"] = stoneFinalProb / (sandFinalProb + snowFinalProb + stoneFinalProb + dirtFinalProb)
+        
+        let randVal = randRange(0, maxVal: 1, seed: Int64(x * y * 4))
+        var total = 0.0
+        
+        for i in probability.keys{
+            if randVal > total && randVal <= total + probability[i]!{
+                return i
+            }
+            total += probability[i]!
+        }
+        return ""
     }
     
-    func stringToBlockObject(x: Int, y: Int, heightAtX: Int, name: String = "", visible: Bool = false) -> Block{
+    func stringToBlockObject(x: Int, y: Int, name: String) -> Block{
         switch(name){
-        case "desert":
-            desert.x = x
-            desert.y = y
-            desert.visible = visible
-            desert.heightAtX = heightAtX
-            return (desert.determineBlock())!
-        case "hills":
-            hill.x = x
-            hill.y = y
-            hill.visible = visible
-            hill.heightAtX = heightAtX
-            return (hill.determineBlock())!
-        case "tundra":
-            tundra.x = x
-            tundra.y = y
-            tundra.visible = visible
-            tundra.heightAtX = heightAtX
-            return (tundra.determineBlock())!
+        case "sandBlock":
+            return SandBlock(x: x, y: y)
+        case "dirtBlock":
+            return DirtBlock(x: x, y: y)
+        case "stoneBlock":
+            return StoneBlock(x: x, y: y)
+        case "snowBlock":
+            return SnowBlock(x: x, y: y)
         default:
-            return Block(x: x, y: y, asset: "", visible: false)
+            return Block(x: x, y: y, asset: name, visible: false)
         }
     }
     
@@ -88,24 +145,23 @@ class GenerateTerrainData{
     func isValidBlock(x: Int, y: Int) -> Block{
         
         let height = terrainFunction(x, seed: 8, range: 1...8)
-        let humidity = scaleVal(8...8, y: terrainFunction(x, seed: 6, range: 8...8))
-        let temperature = scaleVal(8...8, y: terrainFunction(x, seed: 7, range: 8...8))
-        let roughness = scaleVal(6...8, y: terrainFunction(x, seed: 3, range: 6...8))
+        let temperature = (Double(terrainHolesFunction(x, y: y, seed: 6, range: 6...8)) - Double(y - 125) * 0.005)
+        let roughness = scaleVal(6...8, y: Double(terrainFunction(x, seed: 3, range: 6...8)))
         
-        let scaledHeight = scaleVal(1...8, y: height)
+        //let scaledHeight = scaleVal(1...8, y: Double(height))
         
         let shouldBeBlock = terrainHolesFunction(x, y: y, seed: 1, range: 1...4)
         
         if y > height{
             if shouldBeBlock >= 0.6 && shouldBeBlock <= 1.0{
-                return stringToBlockObject(x, y: y, heightAtX: height, name: determineBiome(scaledHeight, humidity: humidity, temperature: temperature, roughness: roughness), visible: true)
+                return stringToBlockObject(x, y: y, name: determineBlock(height, x: x, y: y, temperature: temperature))
             }
-            return stringToBlockObject(x, y: y, heightAtX: height)
+            return stringToBlockObject(x, y: y, name: "")
         }
         if shouldBeBlock >= roughness * 0.33{
-            return stringToBlockObject(x, y: y, heightAtX: height, name: determineBiome(scaledHeight, humidity: humidity, temperature: temperature, roughness: roughness), visible: true)
+            return stringToBlockObject(x, y: y, name: determineBlock(height, x: x, y: y, temperature: temperature))
         }
-        return stringToBlockObject(x, y: y, heightAtX: height)
+        return stringToBlockObject(x, y: y, name: "")
     }
     
     func terrainFunction(a: Int, seed: Int, range: Range<Int>) -> Int{
@@ -121,7 +177,7 @@ class GenerateTerrainData{
         return total1
     }
     
-    func scaleVal(range: Range<Int>, y: Int) -> Double{
+    func scaleVal(range: Range<Int>, y: Double) -> Double{
         var total = 0
         for i in range{
             total += Int(pow(2.0, Double(i - 1)))

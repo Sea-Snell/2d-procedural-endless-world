@@ -19,11 +19,7 @@
 		746555561C07796F005A20BF /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555551C07796F005A20BF /* Camera.swift */; };
 		746555581C078001005A20BF /* terrainWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555571C078001005A20BF /* terrainWorld.swift */; };
 		7465555A1C08DEF3005A20BF /* randomNumbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555591C08DEF3005A20BF /* randomNumbers.swift */; };
-		749C3D601C2B6343001C42F4 /* Biome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D5F1C2B6343001C42F4 /* Biome.swift */; };
 		749C3D621C2B63F4001C42F4 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D611C2B63F4001C42F4 /* Block.swift */; };
-		749C3D641C2B651E001C42F4 /* Desert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D631C2B651E001C42F4 /* Desert.swift */; };
-		749C3D661C2B6593001C42F4 /* Hills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D651C2B6593001C42F4 /* Hills.swift */; };
-		749C3D6A1C2B65E7001C42F4 /* Tundra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D691C2B65E7001C42F4 /* Tundra.swift */; };
 		749C3D6E1C2B6650001C42F4 /* SnowBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D6D1C2B6650001C42F4 /* SnowBlock.swift */; };
 		749C3D701C2B6695001C42F4 /* StoneBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D6F1C2B6695001C42F4 /* StoneBlock.swift */; };
 		749C3D721C2B66B0001C42F4 /* DirtBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D711C2B66B0001C42F4 /* DirtBlock.swift */; };
@@ -67,11 +63,7 @@
 		746555551C07796F005A20BF /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		746555571C078001005A20BF /* terrainWorld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = terrainWorld.swift; sourceTree = "<group>"; };
 		746555591C08DEF3005A20BF /* randomNumbers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = randomNumbers.swift; sourceTree = "<group>"; };
-		749C3D5F1C2B6343001C42F4 /* Biome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Biome.swift; sourceTree = "<group>"; };
 		749C3D611C2B63F4001C42F4 /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
-		749C3D631C2B651E001C42F4 /* Desert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Desert.swift; sourceTree = "<group>"; };
-		749C3D651C2B6593001C42F4 /* Hills.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hills.swift; sourceTree = "<group>"; };
-		749C3D691C2B65E7001C42F4 /* Tundra.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tundra.swift; sourceTree = "<group>"; };
 		749C3D6D1C2B6650001C42F4 /* SnowBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnowBlock.swift; sourceTree = "<group>"; };
 		749C3D6F1C2B6695001C42F4 /* StoneBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoneBlock.swift; sourceTree = "<group>"; };
 		749C3D711C2B66B0001C42F4 /* DirtBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirtBlock.swift; sourceTree = "<group>"; };
@@ -135,7 +127,6 @@
 				7465554F1C076C13005A20BF /* generateTerrainVisuals.swift */,
 				746555591C08DEF3005A20BF /* randomNumbers.swift */,
 				749C3D741C2B6769001C42F4 /* Blocks */,
-				749C3D731C2B6748001C42F4 /* Biomes */,
 				746555261C076B8D005A20BF /* GameScene.sks */,
 				746555281C076B8D005A20BF /* Assets.xcassets */,
 				7465552A1C076B8D005A20BF /* MainMenu.xib */,
@@ -160,17 +151,6 @@
 				746555431C076B8D005A20BF /* Info.plist */,
 			);
 			path = terrariaLikeWorldUITests;
-			sourceTree = "<group>";
-		};
-		749C3D731C2B6748001C42F4 /* Biomes */ = {
-			isa = PBXGroup;
-			children = (
-				749C3D691C2B65E7001C42F4 /* Tundra.swift */,
-				749C3D5F1C2B6343001C42F4 /* Biome.swift */,
-				749C3D631C2B651E001C42F4 /* Desert.swift */,
-				749C3D651C2B6593001C42F4 /* Hills.swift */,
-			);
-			name = Biomes;
 			sourceTree = "<group>";
 		};
 		749C3D741C2B6769001C42F4 /* Blocks */ = {
@@ -317,15 +297,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				749C3D6A1C2B65E7001C42F4 /* Tundra.swift in Sources */,
 				746555251C076B8D005A20BF /* GameScene.swift in Sources */,
 				749C3D7A1C2C8ECB001C42F4 /* SandBlock.swift in Sources */,
 				749C3D701C2B6695001C42F4 /* StoneBlock.swift in Sources */,
-				749C3D661C2B6593001C42F4 /* Hills.swift in Sources */,
 				749C3D621C2B63F4001C42F4 /* Block.swift in Sources */,
 				746555231C076B8D005A20BF /* AppDelegate.swift in Sources */,
 				746555561C07796F005A20BF /* Camera.swift in Sources */,
-				749C3D601C2B6343001C42F4 /* Biome.swift in Sources */,
 				749C3D721C2B66B0001C42F4 /* DirtBlock.swift in Sources */,
 				7465555A1C08DEF3005A20BF /* randomNumbers.swift in Sources */,
 				746555541C07777A005A20BF /* generateTerrainData.swift in Sources */,
@@ -333,7 +310,6 @@
 				746555581C078001005A20BF /* terrainWorld.swift in Sources */,
 				746555501C076C13005A20BF /* generateTerrainVisuals.swift in Sources */,
 				749C3D6E1C2B6650001C42F4 /* SnowBlock.swift in Sources */,
-				749C3D641C2B651E001C42F4 /* Desert.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
