@@ -11,13 +11,11 @@ import Foundation
 class GenerateTerrainData{
     var memo: [String: Bool]
     var desert: Desert
-    var mountain: Mountains
     var hill: Hills
     var tundra: Tundra
     
     init(){
         self.desert = Desert(x: 0, y: 0, heightAtX: 0, visible: false)
-        self.mountain = Mountains(x: 0, y: 0, heightAtX: 0, visible: false)
         self.hill = Hills(x: 0, y: 0, heightAtX: 0, visible: false)
         self.tundra = Tundra(x: 0, y: 0, heightAtX: 0, visible: false)
         self.memo = [:]
@@ -44,7 +42,7 @@ class GenerateTerrainData{
     func determineBiome(elevation: Double, humidity: Double, temperature: Double, roughness: Double) -> String{
         var best = 10.0
         var biome: [String: Any] = [:]
-        let biomes: [[String: Any]] = [["elevation": 1.0, "humidity": 1.0, "temperature": 0.5, "roughness": 1.0, "name": "mountains"], ["elevation": 1.0, "humidity": 0.5, "temperature": 1.0, "roughness": 0.5, "name": "hills"], ["elevation": 0.5, "humidity": 0.0, "temperature": 1.0, "roughness": 0.0, "name": "desert"], ["elevation": 0.5, "humidity": 0.0, "temperature": 0.0, "roughness": 0.5, "name": "tundra"]]
+        let biomes: [[String: Any]] = [["elevation": 1.0, "humidity": 0.5, "temperature": 1.0, "roughness": 0.5, "name": "hills"], ["elevation": 0.5, "humidity": 0.0, "temperature": 1.0, "roughness": 0.0, "name": "desert"], ["elevation": 0.5, "humidity": 0.0, "temperature": 0.0, "roughness": 0.5, "name": "tundra"]]
         
         for i in biomes{
             let a = abs((i["elevation"] as! Double) - elevation)
@@ -57,7 +55,6 @@ class GenerateTerrainData{
                 biome = i
             }
         }
-        
         return String(biome["name"]!)
     }
     
@@ -69,12 +66,6 @@ class GenerateTerrainData{
             desert.visible = visible
             desert.heightAtX = heightAtX
             return (desert.determineBlock())!
-        case "mountains":
-            mountain.x = x
-            mountain.y = y
-            mountain.visible = visible
-            mountain.heightAtX = heightAtX
-            return (mountain.determineBlock())!
         case "hills":
             hill.x = x
             hill.y = y

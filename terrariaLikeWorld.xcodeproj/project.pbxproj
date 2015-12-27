@@ -23,7 +23,6 @@
 		749C3D621C2B63F4001C42F4 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D611C2B63F4001C42F4 /* Block.swift */; };
 		749C3D641C2B651E001C42F4 /* Desert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D631C2B651E001C42F4 /* Desert.swift */; };
 		749C3D661C2B6593001C42F4 /* Hills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D651C2B6593001C42F4 /* Hills.swift */; };
-		749C3D681C2B65B4001C42F4 /* Mountains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D671C2B65B4001C42F4 /* Mountains.swift */; };
 		749C3D6A1C2B65E7001C42F4 /* Tundra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D691C2B65E7001C42F4 /* Tundra.swift */; };
 		749C3D6E1C2B6650001C42F4 /* SnowBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D6D1C2B6650001C42F4 /* SnowBlock.swift */; };
 		749C3D701C2B6695001C42F4 /* StoneBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D6F1C2B6695001C42F4 /* StoneBlock.swift */; };
@@ -72,7 +71,6 @@
 		749C3D611C2B63F4001C42F4 /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		749C3D631C2B651E001C42F4 /* Desert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Desert.swift; sourceTree = "<group>"; };
 		749C3D651C2B6593001C42F4 /* Hills.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hills.swift; sourceTree = "<group>"; };
-		749C3D671C2B65B4001C42F4 /* Mountains.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mountains.swift; sourceTree = "<group>"; };
 		749C3D691C2B65E7001C42F4 /* Tundra.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tundra.swift; sourceTree = "<group>"; };
 		749C3D6D1C2B6650001C42F4 /* SnowBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnowBlock.swift; sourceTree = "<group>"; };
 		749C3D6F1C2B6695001C42F4 /* StoneBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoneBlock.swift; sourceTree = "<group>"; };
@@ -171,7 +169,6 @@
 				749C3D5F1C2B6343001C42F4 /* Biome.swift */,
 				749C3D631C2B651E001C42F4 /* Desert.swift */,
 				749C3D651C2B6593001C42F4 /* Hills.swift */,
-				749C3D671C2B65B4001C42F4 /* Mountains.swift */,
 			);
 			name = Biomes;
 			sourceTree = "<group>";
@@ -320,7 +317,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				749C3D681C2B65B4001C42F4 /* Mountains.swift in Sources */,
 				749C3D6A1C2B65E7001C42F4 /* Tundra.swift in Sources */,
 				746555251C076B8D005A20BF /* GameScene.swift in Sources */,
 				749C3D7A1C2C8ECB001C42F4 /* SandBlock.swift in Sources */,
