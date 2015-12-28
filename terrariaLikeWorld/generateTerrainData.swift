@@ -51,7 +51,7 @@ class GenerateTerrainData{
             sandProbability = 1
         }
         
-        var dirtProbability = -25 * (temperature - 0.5) * (temperature - 0.5) + 0.8
+        var dirtProbability = -25 * (temperature - 0.4) * (temperature - 0.4) + 0.8
         if dirtProbability < 0{
             dirtProbability = 0
         }
@@ -238,6 +238,17 @@ class GenerateTerrainData{
         
         return  a * (1 - cosined) + b * cosined
     }
+    
+//    func isWaterHole(x: Int, y: Int, wavelengths: Range<Int>){
+//        for i in wavelengths{
+//            var grad = abs(Double(a % wavelength)) / Double(wavelength))
+//            if x > 0{
+//                if grad >= 0.5{
+//                    let right =
+//                }
+//            }
+//        }
+//    }
     
     
 //    func isWater(x: Int, y: Int, blockType: Int, last: String? = nil) -> Bool{
