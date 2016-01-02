@@ -37,16 +37,16 @@ class GameScene: SKScene {
         /* Called before each frame is rendered */
         
         if keys["left"] == true{
-            self.myCamera.position.x += 20
+            self.myCamera.position.x += 40
         }
         if keys["right"] == true{
-            self.myCamera.position.x -= 20
+            self.myCamera.position.x -= 40
         }
         if keys["up"] == true{
-            self.myCamera.position.y -= 20
+            self.myCamera.position.y -= 40
         }
         if keys["down"] == true{
-            self.myCamera.position.y += 20
+            self.myCamera.position.y += 40
         }
         if keys["space"] == true{
             //myCamera.updateYPos(CGPoint(x: self.frame.midX, y: self.frame.midY))
