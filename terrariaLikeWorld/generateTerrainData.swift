@@ -12,15 +12,9 @@ class GenerateTerrainData{
     var memo: [String: Bool]
     var precalculatedTerrain: [Int: Int]
     var precalculatedBlocks: [String: Block]
-    var waterStart: Int?
-    var waterEnd: Int?
-    var waterHeight: Int?
     
     init(){
         self.memo = [:]
-        self.waterStart = nil
-        self.waterEnd = nil
-        self.waterHeight = nil
         self.precalculatedTerrain = [:]
         self.precalculatedBlocks = [:]
     }
@@ -293,11 +287,8 @@ class GenerateTerrainData{
             let rightRightXHeight = terrainFunction(rightRightX, seed: 8, range: 1...8)
             
             if leftLeftXHeight > leftXHeight && rightXHeight > leftXHeight{
-                if randRange(0, maxVal: 1, seed: Int64(leftXHeight * leftX * i * 5)) > 0.6{
+                if randRange(0, maxVal: 1, seed: Int64(leftXHeight * leftX * i * 5)) <= self.calculateWaterProbability((Double(terrainHolesFunction(leftX, y: leftXHeight, seed: 6, range: 6...8)) - Double(leftXHeight - 125) * 0.005)){
                     let height = randRange(1, maxVal: Double(min(leftLeftXHeight - leftXHeight, rightXHeight - leftXHeight)), seed: Int64(leftXHeight * leftX * 2 * i))
-                    self.waterHeight = Int(height) + leftXHeight
-                    self.waterStart = leftLeftXHeight
-                    self.waterEnd = rightXHeight
                     if y - leftXHeight <= Int(height){
                         return true
                     }
@@ -305,12 +296,9 @@ class GenerateTerrainData{
             }
             
             if leftXHeight > rightXHeight && rightRightXHeight > rightXHeight{
-                if randRange(0, maxVal: 1, seed: Int64(rightXHeight * rightX * i * 5)) > 0.6{
+                if randRange(0, maxVal: 1, seed: Int64(rightXHeight * rightX * i * 5)) <= self.calculateWaterProbability((Double(terrainHolesFunction(rightX, y: rightXHeight, seed: 6, range: 6...8)) - Double(rightXHeight - 125) * 0.005)){
                     let height = randRange(1, maxVal: Double(min(leftXHeight - rightXHeight, rightRightXHeight - rightXHeight)), seed: Int64(rightXHeight * rightX * 2 * i))
-                    self.waterHeight = Int(height) + rightXHeight
-                    self.waterStart = leftXHeight
-                    self.waterEnd = rightRightXHeight
-                    if y - rightXHeight <= Int(height){
+                    if y - rightXHeight < Int(height){
                         return true
                     }
                 }
@@ -319,10 +307,24 @@ class GenerateTerrainData{
         return false
     }
     
+    func calculateWaterProbability(temp: Double) -> Double{
+        var prob = -7 * (temp - 0.5) * (temp - 0.5) + 0.6
+        
+        if prob < 0.05{
+            prob = 0.05
+        }
+        
+        return prob
+    }
     
-    func isWater(blockType: Block, last: Block? = nil) -> Bool{
+    
+    func isWater(blockType: Block) -> Bool{
         if self.memo.count > 100000{
             self.memo = [:]
+        }
+        
+        if blockType.asset == "waterBlock"{
+            return true
         }
         
         if self.memo["\(blockType.x) \(blockType.y)"] != nil{
@@ -334,105 +336,10 @@ class GenerateTerrainData{
         }
         
         if blockType.visible == false{
-            let ans = self.isWater(self.isValidBlock(blockType.x, y: blockType.y - 1), last: blockType)
-            self.memo["\(blockType.x) \(blockType.y)"] = ans
-            return ans
-        }
-        else if last != nil{
-            let ans = self.cavePerimiter(blockType, block2: last!, startX1: blockType.x, startY1: blockType.y, startX2: last!.x, startY2: last!.y)
+            let ans = self.isWater(self.isValidBlock(blockType.x, y: blockType.y + 1))
             self.memo["\(blockType.x) \(blockType.y)"] = ans
             return ans
         }
         return false
-    }
-    
-    func cavePerimiter(block1: Block, block2: Block, startX1: Int, startY1: Int, startX2: Int, startY2: Int, first: Int = 0, visited: [String: Int] = [:]) -> Bool{
-        
-        let moves = [[1, 0], [-1, 0], [0, 1], [0, -1]]
-        
-        if (block1.visible == false && self.memo["\(block1.x) \(block1.y)"] != nil){
-            return self.memo["\(block1.x) \(block1.y)"]!
-        }
-        
-        if (block2.visible == false && self.memo["\(block2.x) \(block2.y)"] != nil){
-            return self.memo["\(block2.x) \(block2.y)"]!
-        }
-        
-        if block1.asset == "waterBlock" || block2.asset == "waterBlock"{
-            if block1.visible == false{
-                self.memo["\(block1.x) \(block1.y)"] = true
-            }
-            
-            if block2.visible == false{
-                self.memo["\(block2.x) \(block2.y)"] = true
-            }
-            return true
-        }
-        
-        if (block1.y == self.terrainFunction(block1.x, seed: 8, range: 1...8) && block2.y == self.terrainFunction(block2.x, seed: 8, range: 1...8) + 1) || (block2.y == self.terrainFunction(block2.x, seed: 8, range: 1...8) && block1.y == self.terrainFunction(block1.x, seed: 8, range: 1...8) + 1){
-            
-            if block1.visible == false{
-                self.memo["\(block1.x) \(block1.y)"] = false
-            }
-            
-            if block2.visible == false{
-                self.memo["\(block2.x) \(block2.y)"] = false
-            }
-            return false
-        }
-        
-        if (block1.x == startX1 && block1.y == startY1 && block2.x == startX2 && block2.y == startY2 && first == 1) || (block2.x == startX1 && block2.y == startY1 && block1.x == startX2 && block1.y == startY2 && first == 1){
-            
-            if block1.visible == false{
-                self.memo["\(block1.x) \(block1.y)"] = false
-            }
-            
-            if block2.visible == false{
-                self.memo["\(block2.x) \(block2.y)"] = false
-            }
-            return false
-        }
-        var temp = visited
-        temp["\(block1.x) \(block1.y) \(block2.x) \(block2.y)"] = 1
-        
-        var ans = false
-        
-        for i in moves{
-            let blockA = self.isValidBlock(block1.x + i[0], y: block1.y + i[1])
-            
-            for x in moves{
-                let blockB = self.isValidBlock(block2.x + x[0], y: block2.y + x[1])
-                if ((abs(blockA.x - blockB.x) == 1 && abs(blockA.y - blockB.y) == 0) || (abs(blockA.x - blockB.x) == 0 && abs(blockA.y - blockB.y) == 1)){
-                    
-                    if ((blockA.visible == false || blockA.asset == "waterBlock") && (blockB.visible == true && blockB.asset != "waterBlock")) || ((blockA.visible == true && blockA.asset != "waterBlock") && (blockB.visible == false || blockB.asset == "waterBlock")){
-                        
-                        if visited["\(blockA.x) \(blockA.y) \(blockB.x) \(blockB.y)"] == nil && visited["\(blockB.x) \(blockB.y) \(blockA.x) \(blockA.y)"] == nil{
-                            if ans == false{
-                                ans = self.cavePerimiter(blockA, block2: blockB, startX1: startX1, startY1: startY1, startX2: startX2, startY2: startY2, first: 1, visited: temp)
-                            }
-                            if ans == true{
-                                if block1.visible == false{
-                                    self.memo["\(block1.x) \(block1.y)"] = ans
-                                }
-                            
-                                if block2.visible == false{
-                                    self.memo["\(block2.x) \(block2.y)"] = ans
-                                }
-                                return ans
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        if block1.visible == false{
-            self.memo["\(block1.x) \(block1.y)"] = ans
-        }
-        
-        if block2.visible == false{
-            self.memo["\(block2.x) \(block2.y)"] = ans
-        }
-        return ans
     }
 }
