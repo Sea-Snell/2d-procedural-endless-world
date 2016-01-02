@@ -37,7 +37,7 @@ class GenerateTerrainData{
     }
     
     func determineBlock(heightAtX: Int, x: Int, y: Int, temperature: Double) -> String{
-        var probability = ["soneBlock": 0.0, "dirtBlock": 0.0, "snowBlock": 0.0, "sandBlock": 0.0]
+        var probability = ["soneBlock": 0.0, "dirtBlock": 0.0, "snowBlock": 0.0, "sandBlock": 0.0, "clayBlock": 0.0]
         
         var snowProbability = -30 * (temperature - 0.333) * (temperature - 0.333) * (temperature - 0.333)
         if snowProbability < 0{
@@ -87,7 +87,7 @@ class GenerateTerrainData{
             dirtWeight = 0.995
         }
         
-        var stoneWeight = -0.001 * Double((y - heightAtX + 10) * (y - heightAtX + 10) * (y - heightAtX + 10)) + 0.1
+        var stoneWeight = -0.001 * Double((y - heightAtX + 30) * (y - heightAtX + 30) * (y - heightAtX + 30)) + 0.1
         if stoneWeight < 0.005{
             stoneWeight = 0.005
         }
@@ -95,27 +95,31 @@ class GenerateTerrainData{
             stoneWeight = 0.995
         }
         
+        let power = Double(y - heightAtX) + 25.0
+        var clayWeight = -0.0003 * power * power * power * power + 1
+        
+        if clayWeight < 0.00005{
+            clayWeight = 0.00005
+        }
+        
+        if clayWeight > 0.995{
+            clayWeight = 0.995
+        }
+        
         let sandFinalProb = sandProbability * sandWeight
         let dirtFinalProb = dirtProbability * dirtWeight
         let snowFinalProb = snowProbability * snowWeight
         let stoneFinalProb = stoneWeight
+        let clayFinalProb = clayWeight
         
         
-//        var stoneProbability = 0.0002 * Double((y - heightAtX) * (y - heightAtX)) + 0.02
-//        if stoneProbability < 0{
-//            stoneProbability = 0
-//        }
-//        if stoneProbability > 1{
-//            stoneProbability = 1
-//        }
+        let sum = (sandFinalProb + snowFinalProb + stoneFinalProb + dirtFinalProb + clayFinalProb)
         
-        
-        
-        
-        probability["snowBlock"] = snowFinalProb / (sandFinalProb + snowFinalProb + stoneFinalProb + dirtFinalProb)
-        probability["sandBlock"] = sandFinalProb / (sandFinalProb + snowFinalProb + stoneFinalProb + dirtFinalProb)
-        probability["dirtBlock"] = dirtFinalProb / (sandFinalProb + snowFinalProb + stoneFinalProb + dirtFinalProb)
-        probability["stoneBlock"] = stoneFinalProb / (sandFinalProb + snowFinalProb + stoneFinalProb + dirtFinalProb)
+        probability["snowBlock"] = snowFinalProb / sum
+        probability["sandBlock"] = sandFinalProb / sum
+        probability["dirtBlock"] = dirtFinalProb / sum
+        probability["stoneBlock"] = stoneFinalProb / sum
+        probability["clayBlock"] = clayFinalProb / sum
         
         let randVal = randRange(0, maxVal: 1, seed: Int64(x * y * 4))
         var total = 0.0
@@ -139,6 +143,8 @@ class GenerateTerrainData{
             return StoneBlock(x: x, y: y)
         case "snowBlock":
             return SnowBlock(x: x, y: y)
+        case "clayBlock":
+            return ClayBlock(x: x, y: y)
         default:
             return Block(x: x, y: y, asset: name, visible: false)
         }

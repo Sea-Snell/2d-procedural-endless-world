@@ -19,6 +19,7 @@
 		746555561C07796F005A20BF /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555551C07796F005A20BF /* Camera.swift */; };
 		746555581C078001005A20BF /* terrainWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555571C078001005A20BF /* terrainWorld.swift */; };
 		7465555A1C08DEF3005A20BF /* randomNumbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555591C08DEF3005A20BF /* randomNumbers.swift */; };
+		749381521C386AE400EFF8D5 /* clayBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749381511C386AE400EFF8D5 /* clayBlock.swift */; };
 		749C3D621C2B63F4001C42F4 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D611C2B63F4001C42F4 /* Block.swift */; };
 		749C3D6E1C2B6650001C42F4 /* SnowBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D6D1C2B6650001C42F4 /* SnowBlock.swift */; };
 		749C3D701C2B6695001C42F4 /* StoneBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749C3D6F1C2B6695001C42F4 /* StoneBlock.swift */; };
@@ -63,6 +64,7 @@
 		746555551C07796F005A20BF /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		746555571C078001005A20BF /* terrainWorld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = terrainWorld.swift; sourceTree = "<group>"; };
 		746555591C08DEF3005A20BF /* randomNumbers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = randomNumbers.swift; sourceTree = "<group>"; };
+		749381511C386AE400EFF8D5 /* clayBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = clayBlock.swift; sourceTree = "<group>"; };
 		749C3D611C2B63F4001C42F4 /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		749C3D6D1C2B6650001C42F4 /* SnowBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnowBlock.swift; sourceTree = "<group>"; };
 		749C3D6F1C2B6695001C42F4 /* StoneBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoneBlock.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				749C3D791C2C8ECB001C42F4 /* SandBlock.swift */,
+				749381511C386AE400EFF8D5 /* clayBlock.swift */,
 				749C3D6D1C2B6650001C42F4 /* SnowBlock.swift */,
 				749C3D711C2B66B0001C42F4 /* DirtBlock.swift */,
 				749C3D6F1C2B6695001C42F4 /* StoneBlock.swift */,
@@ -303,6 +306,7 @@
 				749C3D621C2B63F4001C42F4 /* Block.swift in Sources */,
 				746555231C076B8D005A20BF /* AppDelegate.swift in Sources */,
 				746555561C07796F005A20BF /* Camera.swift in Sources */,
+				749381521C386AE400EFF8D5 /* clayBlock.swift in Sources */,
 				749C3D721C2B66B0001C42F4 /* DirtBlock.swift in Sources */,
 				7465555A1C08DEF3005A20BF /* randomNumbers.swift in Sources */,
 				746555541C07777A005A20BF /* generateTerrainData.swift in Sources */,
