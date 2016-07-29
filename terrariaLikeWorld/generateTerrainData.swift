@@ -24,10 +24,10 @@ class GenerateTerrainData{
         for x in Int(leftPos.y)..<Int(leftPos.y) + blockSize{
             var temp: [Block] = []
             for i in Int(leftPos.x)..<Int(leftPos.x) + blockSize{
-                var block = self.isValidBlock(i, y: x)
-                if isWater(block) == true{
-                    block = WaterBlock(x: i, y: x)
-                }
+                let block = self.isValidBlock(i, y: x)
+//                if isWater(block) == true{
+//                    block = WaterBlock(x: i, y: x)
+//                }
                 temp.append(block)
             }
             terrainData.append(temp)
@@ -176,11 +176,11 @@ class GenerateTerrainData{
                 self.precalculatedBlocks["\(x) \(y)"] = ans
                 return ans
             }
-            if isWaterHole(x, y: y, wavelengths: 8...8) == true{
-                let ans = WaterBlock(x: x, y: y)
-                self.precalculatedBlocks["\(x) \(y)"] = ans
-                return ans
-            }
+//            if isWaterHole(x, y: y, wavelengths: 8...8) == true{
+//                let ans = WaterBlock(x: x, y: y)
+//                self.precalculatedBlocks["\(x) \(y)"] = ans
+//                return ans
+//            }
             let ans = stringToBlockObject(x, y: y, name: "")
             self.precalculatedBlocks["\(x) \(y)"] = ans
             return ans
@@ -279,73 +279,83 @@ class GenerateTerrainData{
         return  a * (1 - cosined) + b * cosined
     }
     
-    func isWaterHole(x: Int, y: Int, wavelengths: Range<Int>) -> Bool{
-        for i in wavelengths{
-            let wave = Int(pow(2.0, Double(i)))
-            let leftX = x - (x % wave)
-            let rightX = leftX + wave
-            let leftLeftX = leftX - wave
-            let rightRightX = rightX + wave
-            
-            let leftXHeight = terrainFunction(leftX, seed: 8, range: 1...8)
-            let leftLeftXHeight = terrainFunction(leftLeftX, seed: 8, range: 1...8)
-            let rightXHeight = terrainFunction(rightX, seed: 8, range: 1...8)
-            let rightRightXHeight = terrainFunction(rightRightX, seed: 8, range: 1...8)
-            
-            if leftLeftXHeight > leftXHeight && rightXHeight > leftXHeight{
-                if randRange(0, maxVal: 1, seed: Int64(leftXHeight * leftX * i * 5)) <= self.calculateWaterProbability((Double(terrainHolesFunction(leftX, y: leftXHeight, seed: 6, range: 6...8)) - Double(leftXHeight - 125) * 0.005)){
-                    let height = randRange(1, maxVal: Double(min(leftLeftXHeight - leftXHeight, rightXHeight - leftXHeight)), seed: Int64(leftXHeight * leftX * 2 * i))
-                    if y - leftXHeight <= Int(height){
-                        return true
-                    }
-                }
-            }
-            
-            if leftXHeight > rightXHeight && rightRightXHeight > rightXHeight{
-                if randRange(0, maxVal: 1, seed: Int64(rightXHeight * rightX * i * 5)) <= self.calculateWaterProbability((Double(terrainHolesFunction(rightX, y: rightXHeight, seed: 6, range: 6...8)) - Double(rightXHeight - 125) * 0.005)){
-                    let height = randRange(1, maxVal: Double(min(leftXHeight - rightXHeight, rightRightXHeight - rightXHeight)), seed: Int64(rightXHeight * rightX * 2 * i))
-                    if y - rightXHeight < Int(height){
-                        return true
-                    }
-                }
-            }
-        }
-        return false
-    }
+//    func isWaterHole(x: Int, y: Int, wavelengths: Range<Int>) -> Bool{
+//        for i in wavelengths{
+//            let wave = Int(pow(2.0, Double(i)))
+//            let leftX = x - (x % wave)
+//            let rightX = leftX + wave
+//            let leftLeftX = leftX - wave
+//            let rightRightX = rightX + wave
+//            
+//            let leftXHeight = terrainFunction(leftX, seed: 8, range: 1...8)
+//            let leftLeftXHeight = terrainFunction(leftLeftX, seed: 8, range: 1...8)
+//            let rightXHeight = terrainFunction(rightX, seed: 8, range: 1...8)
+//            let rightRightXHeight = terrainFunction(rightRightX, seed: 8, range: 1...8)
+//            
+//            if leftLeftXHeight > leftXHeight && rightXHeight > leftXHeight{
+//                if randRange(0, maxVal: 1, seed: Int64(leftXHeight * leftX * i * 5)) <= self.calculateWaterProbability((Double(terrainHolesFunction(leftX, y: leftXHeight, seed: 6, range: 6...8)) - Double(leftXHeight - 125) * 0.005)){
+//                    let height = randRange(1, maxVal: Double(min(leftLeftXHeight - leftXHeight, rightXHeight - leftXHeight)), seed: Int64(leftXHeight * leftX * 2 * i))
+//                    if y - leftXHeight <= Int(height){
+//                        return true
+//                    }
+//                }
+//            }
+//            
+//            if leftXHeight > rightXHeight && rightRightXHeight > rightXHeight{
+//                if randRange(0, maxVal: 1, seed: Int64(rightXHeight * rightX * i * 5)) <= self.calculateWaterProbability((Double(terrainHolesFunction(rightX, y: rightXHeight, seed: 6, range: 6...8)) - Double(rightXHeight - 125) * 0.005)){
+//                    let height = randRange(1, maxVal: Double(min(leftXHeight - rightXHeight, rightRightXHeight - rightXHeight)), seed: Int64(rightXHeight * rightX * 2 * i))
+//                    if y - rightXHeight < Int(height){
+//                        return true
+//                    }
+//                }
+//            }
+//        }
+//        return false
+//    }
+//    
+//    func calculateWaterProbability(temp: Double) -> Double{
+//        var prob = -7 * (temp - 0.5) * (temp - 0.5) + 0.7
+//        
+//        if prob < 0.05{
+//            prob = 0.05
+//        }
+//        
+//        return prob
+//    }
     
-    func calculateWaterProbability(temp: Double) -> Double{
-        var prob = -7 * (temp - 0.5) * (temp - 0.5) + 0.6
-        
-        if prob < 0.05{
-            prob = 0.05
-        }
-        
-        return prob
-    }
     
-    
-    func isWater(blockType: Block) -> Bool{
-        if self.memo.count > 100000{
-            self.memo = [:]
-        }
-        
-        if blockType.asset == "waterBlock"{
-            return true
-        }
-        
-        if self.memo["\(blockType.x) \(blockType.y)"] != nil{
-            return self.memo["\(blockType.x) \(blockType.y)"]!
-        }
-        
-        if blockType.y > self.terrainFunction(blockType.x, seed: 8, range: 1...8){
-            return false
-        }
-        
-        if blockType.visible == false{
-            let ans = self.isWater(self.isValidBlock(blockType.x, y: blockType.y + 1))
-            self.memo["\(blockType.x) \(blockType.y)"] = ans
-            return ans
-        }
-        return false
-    }
+//    func isWater(blockType: Block, var visited: [String] = []) -> Bool{
+//        let directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+//        if self.memo.count > 100000{
+//            self.memo = [:]
+//        }
+//        
+//        if blockType.asset == "waterBlock"{
+//            return true
+//        }
+//        
+//        if self.memo["\(blockType.x) \(blockType.y)"] != nil{
+//            return self.memo["\(blockType.x) \(blockType.y)"]!
+//        }
+//        
+//        if blockType.y > self.terrainFunction(blockType.x, seed: 8, range: 1...8){
+//            return false
+//        }
+//        
+//        if blockType.visible == false{
+//            for i in 0..<directions.count{
+//                if (visited.contains("\(blockType.x + directions[i][0])  \(blockType.y + directions[i][1])")) == false{
+//                    visited.append("\(blockType.x + directions[i][0])  \(blockType.y + directions[i][1])")
+//                    let ans = self.isWater(self.isValidBlock(blockType.x + directions[i][0], y: blockType.y + directions[i][1]), visited: visited)
+//                    visited.popLast()
+//                    if ans == true{
+//                        self.memo["\(blockType.x) \(blockType.y)"] = true
+//                        return true
+//                    }
+//                }
+//            }
+//        }
+//        self.memo["\(blockType.x) \(blockType.y)"] = false
+//        return false
+//    }
 }

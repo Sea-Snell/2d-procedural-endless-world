@@ -9,7 +9,7 @@
 import SpriteKit
 
 class GameScene: SKScene {
-    var keys = ["up": false, "down": false, "left": false, "right": false, "space": false]
+    var keys = ["up": false, "down": false, "left": false, "right": false, "space": false, "e": false]
     var myCamera: MyCamera = MyCamera()
 //    var playerPlaceHolder = SKSpriteNode(imageNamed: "circle")
     
@@ -37,25 +37,32 @@ class GameScene: SKScene {
         /* Called before each frame is rendered */
         
         if keys["left"] == true{
-            self.myCamera.position.x += 40
+            self.myCamera.position.x += 10
         }
         if keys["right"] == true{
-            self.myCamera.position.x -= 40
+            self.myCamera.position.x -= 10
         }
         if keys["up"] == true{
-            self.myCamera.position.y -= 40
+            self.myCamera.position.y -= 10
         }
         if keys["down"] == true{
-            self.myCamera.position.y += 40
+            self.myCamera.position.y += 10
         }
         if keys["space"] == true{
-            //myCamera.updateYPos(CGPoint(x: self.frame.midX, y: self.frame.midY))
+            myCamera.updateYPos(CGPoint(x: self.frame.midX, y: self.frame.midY))
+        }
+        if keys["e"] == true{
+            myCamera.updateYPosSmooth(CGPoint(x: self.frame.midX, y: self.frame.midY))
         }
         self.myCamera.endlessTerrain(self.frame.minX - 200, rightBound: self.frame.maxX + 200, topBound: self.frame.maxY + 500, bottomBound: self.frame.minY - 500)
     }
     
     override func keyDown(theEvent: NSEvent) {
         let keyCode = theEvent.keyCode
+        
+        if (keyCode == 14){
+            keys["e"] = true
+        }
         if (keyCode == 49){
             keys["space"] = true
         }
@@ -75,6 +82,9 @@ class GameScene: SKScene {
     
     override func keyUp(theEvent: NSEvent) {
         let keyCode = theEvent.keyCode
+        if (keyCode == 14){
+            keys["e"] = false
+        }
         if (keyCode == 49){
             keys["space"] = false
         }

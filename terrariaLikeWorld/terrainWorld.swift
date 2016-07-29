@@ -21,7 +21,7 @@ class TerrainWorld: SKNode{
     override init() {
         self.start = CGPoint(x: 0, y: 0)
         self.blockSize = 1
-        self.blockWidth = 50
+        self.blockWidth = 13
         self.terrainData = []
         self.terrain = []
         self.point = CGPoint(x: 0, y: 0)
@@ -30,8 +30,9 @@ class TerrainWorld: SKNode{
         super.init()
         
         self.point = CGPoint(x: self.position.x, y: self.position.y)
-        for _ in 0..<26{
-            self.addBlockColRight(26)
+        
+        for _ in 0..<104{
+            self.addBlockColRight(104)
         }
     }
     
