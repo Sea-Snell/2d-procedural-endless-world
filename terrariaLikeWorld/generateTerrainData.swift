@@ -19,7 +19,7 @@ class GenerateTerrainData{
         self.precalculatedBlocks = [:]
     }
     
-    func generateTerrainData(leftPos: CGPoint, blockSize: Int) -> [[Block]]{
+    func generateTerrainData(_ leftPos: CGPoint, blockSize: Int) -> [[Block]]{
         var terrainData: [[Block]] = []
         for x in Int(leftPos.y)..<Int(leftPos.y) + blockSize{
             var temp: [Block] = []
@@ -36,7 +36,7 @@ class GenerateTerrainData{
         return terrainData
     }
     
-    func determineBlock(heightAtX: Int, x: Int, y: Int, temperature: Double) -> String{
+    func determineBlock(_ heightAtX: Int, x: Int, y: Int, temperature: Double) -> String{
         var probability = ["soneBlock": 0.0, "dirtBlock": 0.0, "snowBlock": 0.0, "sandBlock": 0.0, "clayBlock": 0.0]
         
         var snowProbability = -30 * (temperature - 0.333) * (temperature - 0.333) * (temperature - 0.333)
@@ -133,7 +133,7 @@ class GenerateTerrainData{
         return ""
     }
     
-    func stringToBlockObject(x: Int, y: Int, name: String) -> Block{
+    func stringToBlockObject(_ x: Int, y: Int, name: String) -> Block{
         switch(name){
         case "sandBlock":
             return SandBlock(x: x, y: y)
@@ -152,7 +152,7 @@ class GenerateTerrainData{
     
     
     
-    func isValidBlock(x: Int, y: Int) -> Block{
+    func isValidBlock(_ x: Int, y: Int) -> Block{
         
         if self.precalculatedBlocks["\(x) \(y)"] != nil{
             return self.precalculatedBlocks["\(x) \(y)"]!
@@ -195,7 +195,7 @@ class GenerateTerrainData{
         return ans
     }
     
-    func terrainFunction(a: Int, seed: Int, range: Range<Int>) -> Int{
+    func terrainFunction(_ a: Int, seed: Int, range: Range<Int>) -> Int{
         
         if self.precalculatedTerrain.count > 100000{
             self.precalculatedTerrain = [:]
@@ -217,7 +217,7 @@ class GenerateTerrainData{
         return total1
     }
     
-    func scaleVal(range: Range<Int>, y: Double) -> Double{
+    func scaleVal(_ range: Range<Int>, y: Double) -> Double{
         var total = 0
         for i in range{
             total += Int(pow(2.0, Double(i - 1)))
@@ -226,7 +226,7 @@ class GenerateTerrainData{
         return Double(y) / Double(total)
     }
     
-    func terrainHolesFunction(x: Int, y: Int, seed: Int, range: Range<Int>) -> Double{
+    func terrainHolesFunction(_ x: Int, y: Int, seed: Int, range: Range<Int>) -> Double{
         var total1 = 0
         var ampSum = 0
         
@@ -239,7 +239,7 @@ class GenerateTerrainData{
         return Double(total1) / Double(ampSum)
     }
     
-    func noiseGenerator1d(a: Int, wavelength: Int, amplitude: Int, seed: Int) -> Int{
+    func noiseGenerator1d(_ a: Int, wavelength: Int, amplitude: Int, seed: Int) -> Int{
         if a >= 0{
             let left = randRange(1, maxVal: Double(amplitude), seed: Int64((a - (a % wavelength)) * wavelength * seed))
             let right = randRange(1, maxVal: Double(amplitude), seed: Int64((wavelength + (a - (a % wavelength))) * wavelength * seed))
@@ -255,7 +255,7 @@ class GenerateTerrainData{
         }
     }
     
-    func noiseGenerator2d(x: Int, y: Int, wavelength: Int, amplitude: Int, seed: Int) -> Int{
+    func noiseGenerator2d(_ x: Int, y: Int, wavelength: Int, amplitude: Int, seed: Int) -> Int{
         let indexA = (x / wavelength) * wavelength
         let indexB = wavelength + (x / wavelength) * wavelength
         let horizontalBlendVal: Double = Double(x - indexA) / Double(wavelength)
@@ -272,7 +272,7 @@ class GenerateTerrainData{
         
     }
     
-    func cosineInterplation(a: Double, b: Double, x: Double) -> Double{
+    func cosineInterplation(_ a: Double, b: Double, x: Double) -> Double{
         let scaled = x * 3.1415927
         let cosined = (1 - cos(scaled)) * 0.5
         

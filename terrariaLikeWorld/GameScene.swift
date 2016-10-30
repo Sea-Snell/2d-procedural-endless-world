@@ -13,7 +13,7 @@ class GameScene: SKScene {
     var myCamera: MyCamera = MyCamera()
 //    var playerPlaceHolder = SKSpriteNode(imageNamed: "circle")
     
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         /* Setup your scene here */
         
 //        self.playerPlaceHolder.position.x = self.frame.midX
@@ -29,11 +29,11 @@ class GameScene: SKScene {
         self.addChild(myCamera)
     }
     
-    override func mouseDown(theEvent: NSEvent) {
+    override func mouseDown(with theEvent: NSEvent) {
         /* Called when a mouse click occurs */
     }
     
-    override func update(currentTime: CFTimeInterval) {
+    override func update(_ currentTime: TimeInterval) {
         /* Called before each frame is rendered */
         
         if keys["left"] == true{
@@ -57,7 +57,7 @@ class GameScene: SKScene {
         self.myCamera.endlessTerrain(self.frame.minX - 200, rightBound: self.frame.maxX + 200, topBound: self.frame.maxY + 500, bottomBound: self.frame.minY - 500)
     }
     
-    override func keyDown(theEvent: NSEvent) {
+    override func keyDown(with theEvent: NSEvent) {
         let keyCode = theEvent.keyCode
         
         if (keyCode == 14){
@@ -80,7 +80,7 @@ class GameScene: SKScene {
         }
     }
     
-    override func keyUp(theEvent: NSEvent) {
+    override func keyUp(with theEvent: NSEvent) {
         let keyCode = theEvent.keyCode
         if (keyCode == 14){
             keys["e"] = false

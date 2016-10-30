@@ -7,15 +7,16 @@
 //
 
 import Foundation
-func generateRandomNumber(seed: Int64) -> Int64{
+func generateRandomNumber(_ seed: Int64) -> Int64{
     return Int64(seed * Int64(2147483647) % Int64(16807))
 }
 
-func getRangedRandomNumber(seed: Int64) -> Double{
+func getRangedRandomNumber(_ seed: Int64) -> Double{
     return Double(seed) / 16807.0
 }
 
-func rand(var seed: Int64) -> Double{
+func rand(_ seed: Int64) -> Double{
+    var seed = seed
     if seed == 0{
         seed = 1
     }
@@ -25,6 +26,6 @@ func rand(var seed: Int64) -> Double{
     return abs(getRangedRandomNumber(seed))
 }
 
-func randRange(minVal: Double, maxVal: Double, seed: Int64) -> Double{
+func randRange(_ minVal: Double, maxVal: Double, seed: Int64) -> Double{
     return (rand(seed)) * (maxVal - minVal) + minVal
 }
