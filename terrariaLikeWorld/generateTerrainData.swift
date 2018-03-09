@@ -195,7 +195,7 @@ class GenerateTerrainData{
         return ans
     }
     
-    func terrainFunction(_ a: Int, seed: Int, range: Range<Int>) -> Int{
+    func terrainFunction(_ a: Int, seed: Int, range: CountableClosedRange<Int>) -> Int{
         
         if self.precalculatedTerrain.count > 100000{
             self.precalculatedTerrain = [:]
@@ -217,7 +217,7 @@ class GenerateTerrainData{
         return total1
     }
     
-    func scaleVal(_ range: Range<Int>, y: Double) -> Double{
+    func scaleVal(_ range: CountableClosedRange<Int>, y: Double) -> Double{
         var total = 0
         for i in range{
             total += Int(pow(2.0, Double(i - 1)))
@@ -226,7 +226,7 @@ class GenerateTerrainData{
         return Double(y) / Double(total)
     }
     
-    func terrainHolesFunction(_ x: Int, y: Int, seed: Int, range: Range<Int>) -> Double{
+    func terrainHolesFunction(_ x: Int, y: Int, seed: Int, range: CountableClosedRange<Int>) -> Double{
         var total1 = 0
         var ampSum = 0
         

@@ -34,7 +34,7 @@ class MyCamera: SKNode{
         let currentPos = Int((centerPos.x - self.position.x) / CGFloat(self.terrainWorld.blockWidth))
         if CGFloat(currentPos) >= self.terrainWorld.start.x && CGFloat(currentPos) < CGFloat(self.terrainWorld.terrainData.count) + self.terrainWorld.start.x{
             let currentHeight = terrainWorld.dataGenerator.terrainFunction(currentPos, seed: 8, range: 1...8)
-            let newY = centerPos.y - CGFloat(currentHeight * self.terrainWorld.blockWidth)
+            let newY = centerPos.y - CGFloat(currentHeight) * self.terrainWorld.blockWidth
             self.position.y = newY
             //let moveY = SKAction.moveToY(newY, duration: 0.5)
             //self.runAction(moveY)
@@ -45,7 +45,7 @@ class MyCamera: SKNode{
         let currentPos = Int((centerPos.x - self.position.x) / CGFloat(self.terrainWorld.blockWidth))
         if CGFloat(currentPos) >= self.terrainWorld.start.x && CGFloat(currentPos) < CGFloat(self.terrainWorld.terrainData.count) + self.terrainWorld.start.x{
             let currentHeight = terrainWorld.dataGenerator.terrainFunction(currentPos, seed: 8, range: 1...8)
-            let newY = centerPos.y - CGFloat(currentHeight * self.terrainWorld.blockWidth)
+            let newY = centerPos.y - CGFloat(currentHeight) * self.terrainWorld.blockWidth
             let moveY = SKAction.moveTo(y: newY, duration: 0.5)
             self.run(moveY)
         }
@@ -53,9 +53,9 @@ class MyCamera: SKNode{
     
     func endlessTerrain(_ leftBound: CGFloat, rightBound: CGFloat, topBound: CGFloat, bottomBound: CGFloat){
         if self.terrainWorld.terrain.count > 0{
-            let isOutLeftBound = self.position.x + (self.terrainWorld.terrain[0][0].position.x + CGFloat(self.terrainWorld.blockWidth * self.terrainWorld.blockSize)) < leftBound
+            let isOutLeftBound = self.position.x + (self.terrainWorld.terrain[0][0].position.x + self.terrainWorld.blockWidth * CGFloat(self.terrainWorld.blockSize)) < leftBound
             let isOutRightBound = self.position.x + self.terrainWorld.terrain[0][self.terrainWorld.terrain[0].count - 1].position.x > rightBound
-            let isOutTopBound = self.position.y + (self.terrainWorld.terrain[self.terrainWorld.terrain.count - 1][0].position.y + CGFloat(self.terrainWorld.blockWidth * self.terrainWorld.blockSize)) > topBound
+            let isOutTopBound = self.position.y + (self.terrainWorld.terrain[self.terrainWorld.terrain.count - 1][0].position.y + self.terrainWorld.blockWidth * CGFloat(self.terrainWorld.blockSize)) > topBound
             let isOutBottomBound = self.position.y + self.terrainWorld.terrain[0][0].position.y < bottomBound
         
             if isOutLeftBound{

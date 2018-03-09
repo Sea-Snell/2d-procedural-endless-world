@@ -11,7 +11,7 @@ import SpriteKit
 
 class TerrainWorld: SKNode{
     var blockSize: Int
-    var blockWidth: Int
+    var blockWidth: CGFloat
     var terrain: [[Terrain]]
     var terrainData: [[Block]]
     var start: CGPoint
@@ -21,7 +21,7 @@ class TerrainWorld: SKNode{
     override init() {
         self.start = CGPoint(x: 0, y: 0)
         self.blockSize = 1
-        self.blockWidth = 13
+        self.blockWidth = 12.5
         self.terrainData = []
         self.terrain = []
         self.point = CGPoint(x: 0, y: 0)
@@ -39,7 +39,7 @@ class TerrainWorld: SKNode{
     func addBlockColRight(_ colSize: Int){
         var blockX = 0
         
-        if self.terrainData != []{
+        if self.terrainData.count != 0{
             blockX = Int(self.start.x) + (self.terrainData[0].count)
         }
         else{
@@ -64,7 +64,7 @@ class TerrainWorld: SKNode{
             let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: self.splice2dArray(self.blockSize * i..<self.blockSize * (i + 1), range2: self.terrainData[0].count - self.blockSize..<self.terrainData[0].count, items: self.terrainData))
             terrainVal.generateTerrain()
             terrainVal.position.x = self.point.x + (CGFloat(blockX) - self.start.x) * CGFloat(self.blockWidth)
-            terrainVal.position.y = self.point.y + CGFloat(i * self.blockSize * self.blockWidth)
+            terrainVal.position.y = self.point.y + CGFloat(i * self.blockSize) * self.blockWidth
             self.addChild(terrainVal)
             
             self.terrain[i].append(terrainVal)
@@ -73,14 +73,14 @@ class TerrainWorld: SKNode{
     
     
     func addBlockColLeft(_ colSize: Int){
-        if self.terrainData != []{
+        if self.terrainData.count != 0{
             self.start.x -= CGFloat(self.blockSize)
-            self.point.x -= CGFloat(self.blockSize * self.blockWidth)
+            self.point.x -= CGFloat(self.blockSize) * self.blockWidth
         }
         
         let blockX = self.start.x
         
-        if self.terrainData == []{
+        if self.terrainData.count == 0{
             for _ in 0..<colSize * blockSize{
                 self.terrainData.append([])
             }
@@ -102,7 +102,7 @@ class TerrainWorld: SKNode{
             let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: self.splice2dArray(self.blockSize * i..<self.blockSize * (i + 1), range2: 0..<self.blockSize, items: self.terrainData))
             terrainVal.generateTerrain()
             terrainVal.position.x = self.point.x
-            terrainVal.position.y = self.point.y + CGFloat(i * self.blockSize * self.blockWidth)
+            terrainVal.position.y = self.point.y + CGFloat(i * self.blockSize) * self.blockWidth
             self.addChild(terrainVal)
             
             self.terrain[i].insert(terrainVal, at: 0)
@@ -113,7 +113,7 @@ class TerrainWorld: SKNode{
     func addBlockRowTop(_ rowSize: Int){
         var blockY = 0
         
-        if self.terrainData != []{
+        if self.terrainData.count != 0{
             blockY = Int(self.start.y) + (self.terrainData.count)
         }
         
@@ -134,7 +134,7 @@ class TerrainWorld: SKNode{
         for i in 0..<rowSize{
             let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: self.splice2dArray(self.terrainData.count - self.blockSize..<self.terrainData.count, range2: i * self.blockSize..<(i + 1) * self.blockSize, items: self.terrainData))
             terrainVal.generateTerrain()
-            terrainVal.position.x = self.point.x + CGFloat(i * self.blockSize * self.blockWidth)
+            terrainVal.position.x = self.point.x + CGFloat(i * self.blockSize) * self.blockWidth
             terrainVal.position.y = self.point.y + (CGFloat(blockY) - self.start.y) * CGFloat(self.blockWidth)
             self.addChild(terrainVal)
             
@@ -143,9 +143,9 @@ class TerrainWorld: SKNode{
     }
     
     func addBlockRowBottom(_ rowSize: Int){
-        if self.terrainData != []{
+        if self.terrainData.count != 0{
             self.start.y -= CGFloat(self.blockSize)
-            self.point.y -= CGFloat(self.blockSize * self.blockWidth)
+            self.point.y -= CGFloat(self.blockSize) * self.blockWidth
         }
         
         let blockY = self.start.y
@@ -167,7 +167,7 @@ class TerrainWorld: SKNode{
         for i in 0..<rowSize{
             let terrainVal = Terrain(blockSize: self.blockSize, blockWidth: self.blockWidth, terrainData: self.splice2dArray(0..<self.blockSize, range2: i * self.blockSize..<(i + 1) * self.blockSize, items: self.terrainData))
             terrainVal.generateTerrain()
-            terrainVal.position.x = self.point.x + CGFloat(i * self.blockSize * self.blockWidth)
+            terrainVal.position.x = self.point.x + CGFloat(i * self.blockSize) * self.blockWidth
             terrainVal.position.y = self.point.y
             self.addChild(terrainVal)
             
@@ -185,7 +185,7 @@ class TerrainWorld: SKNode{
         }
         
         self.start.x += CGFloat(self.blockSize)
-        self.point.x += CGFloat(self.blockSize * self.blockWidth)
+        self.point.x += CGFloat(self.blockSize) * self.blockWidth
         
         self.removeChildren(in: deadTerain)
     }
@@ -207,7 +207,7 @@ class TerrainWorld: SKNode{
         self.terrain.remove(at: 0)
         
         self.start.y += CGFloat(self.blockSize)
-        self.point.y += CGFloat(self.blockSize * self.blockWidth)
+        self.point.y += CGFloat(self.blockSize) * self.blockWidth
     }
     
     func removeBlockRowTop(){
@@ -216,7 +216,7 @@ class TerrainWorld: SKNode{
         self.terrain.removeLast()
     }
     
-    func splice2dArray(_ range1: Range<Int>, range2: Range<Int>, items: [[Block]]) -> [[Block]]{
+    func splice2dArray(_ range1: CountableRange<Int>, range2: CountableRange<Int>, items: [[Block]]) -> [[Block]]{
         var newItems: [[Block]] = []
         for i in range1{
             var temp: [Block] = []
