@@ -6,35 +6,82 @@
 //  Copyright © 2015 sea_software. All rights reserved.
 //
 
+
+
+
 import Foundation
 
 class GenerateTerrainData{
-    var memo: [String: Bool]
-    var precalculatedTerrain: [Int: Int]
-    var precalculatedBlocks: [String: Block]
     
+    var memo: [GridPoint: Block]
+    var randomNums: RandomNumber
     init(){
-        self.memo = [:]
-        self.precalculatedTerrain = [:]
-        self.precalculatedBlocks = [:]
+        self.memo = Dictionary<GridPoint, Block>(minimumCapacity: 100000)
+        self.randomNums = RandomNumber()
     }
     
-    func generateTerrainData(leftPos: CGPoint, blockSize: Int) -> [[Block]]{
-        var terrainData: [[Block]] = []
-        for x in Int(leftPos.y)..<Int(leftPos.y) + blockSize{
-            var temp: [Block] = []
-            for i in Int(leftPos.x)..<Int(leftPos.x) + blockSize{
-                var block = self.isValidBlock(i, y: x)
-                if isWater(block) == true{
-                    block = WaterBlock(x: i, y: x)
-                }
-                temp.append(block)
-            }
-            terrainData.append(temp)
+    func generateTerrainData(x: Int, y: Int) -> Block{
+        let gridPoint = GridPoint(x: x, y: y)
+        if let block = self.memo[gridPoint]{
+            return block
         }
-    
-        return terrainData
+        
+        let height = getGroundHeight(x: x)
+        let temperature = getTemp(x: x, y: y)
+        let caveStrength = getCaveStrength(x: x, y: y)
+        let caveProb = getCaveProb(x: x, y: y)
+        let cloudProb = getCloudProb(x: x, y: y)
+        
+        var block = Block()
+        block.x = x
+        block.y = y
+        block.visible = false
+        block.asset = ""
+        
+        if y > height{
+            if cloudProb >= 0.6 && cloudProb <= 1.0{
+                block.visible = true
+                block.asset = "cloudBlock"
+            }
+        }
+        else{
+            if caveProb >= caveStrength * 0.33{
+                block.visible = true
+                block.asset = determineBlock(heightAtX: height, x: x, y: y, temperature: temperature)
+            }
+        }
+        return insertMemo(gridPoint: gridPoint, block: block)
     }
+    
+    func getGroundHeight(x: Int) -> Int{
+        return Int(224.0 * terrainFunction(a: x, seed: 8, range: 1...8))
+    }
+    
+    func getTemp(x: Int, y: Int) -> Double{
+        return terrainHolesFunction(x: x, y: y, seed: 6, range: 6...8) - Double(y - 125) * 0.005
+    }
+    
+    func getCaveStrength(x: Int, y: Int) -> Double{
+        return terrainHolesFunction(x: x, y: y, seed: 3, range: 6...8)
+    }
+    
+    func getCaveProb(x: Int, y: Int) -> Double{
+        return terrainHolesFunction(x: x, y: y, seed: 1, range: 1...4)
+    }
+    
+    func getCloudProb(x: Int, y: Int) -> Double{
+        return terrainHolesFunction(x: x, y: y, seed: 2, range: 2...5) + min((Double(y) - 225.0) * 0.001, 0.0)
+    }
+    
+//    func getTree(x: Int, groundHeight: Int){
+//        let treeProab = scaleVal(range: 6...8, y: Double(terrainFunction(a: x, seed: 5, range: 6...8)))
+//        let randVal = randRange(minVal: 0, maxVal: 1, seed: Int64(x * 5))
+//
+//        if randVal < treeProab{
+//            let height = randRange(minVal: 5.0, maxVal: 30.0, seed: Int64(x * 6))
+//
+//        }
+//    }
     
     func determineBlock(heightAtX: Int, x: Int, y: Int, temperature: Double) -> String{
         var probability = ["soneBlock": 0.0, "dirtBlock": 0.0, "snowBlock": 0.0, "sandBlock": 0.0, "clayBlock": 0.0]
@@ -121,137 +168,56 @@ class GenerateTerrainData{
         probability["stoneBlock"] = stoneFinalProb / sum
         probability["clayBlock"] = clayFinalProb / sum
         
-        let randVal = randRange(0, maxVal: 1, seed: Int64(x * y * 4))
+        let keyList = ["snowBlock", "sandBlock", "dirtBlock", "stoneBlock", "clayBlock"]
+        self.randomNums.seed = Int64(x * y * 4)
+        let randVal = self.randomNums.rand()
         var total = 0.0
-        
-        for i in probability.keys{
-            if randVal > total && randVal <= total + probability[i]!{
-                return i
+        if randVal == 0.0{
+            return keyList[0]
+        }
+        for i in 0..<keyList.count{
+            if randVal > total && randVal <= total + probability[keyList[i]]!{
+                return keyList[i]
             }
-            total += probability[i]!
+            total += probability[keyList[i]]!
         }
         return ""
     }
     
-    func stringToBlockObject(x: Int, y: Int, name: String) -> Block{
-        switch(name){
-        case "sandBlock":
-            return SandBlock(x: x, y: y)
-        case "dirtBlock":
-            return DirtBlock(x: x, y: y)
-        case "stoneBlock":
-            return StoneBlock(x: x, y: y)
-        case "snowBlock":
-            return SnowBlock(x: x, y: y)
-        case "clayBlock":
-            return ClayBlock(x: x, y: y)
-        default:
-            return Block(x: x, y: y, asset: name, visible: false)
-        }
-    }
-    
-    
-    
-    func isValidBlock(x: Int, y: Int) -> Block{
-        
-        if self.precalculatedBlocks["\(x) \(y)"] != nil{
-            return self.precalculatedBlocks["\(x) \(y)"]!
-        }
-        
-        if self.precalculatedBlocks.count > 100000{
-            self.precalculatedBlocks = [:]
-        }
-        
-        let height = terrainFunction(x, seed: 8, range: 1...8)
-        let temperature = (Double(terrainHolesFunction(x, y: y, seed: 6, range: 6...8)) - Double(y - 125) * 0.005)
-        let roughness = scaleVal(6...8, y: Double(terrainFunction(x, seed: 3, range: 6...8)))
-        
-        //let scaledHeight = scaleVal(1...8, y: Double(height))
-        
-        let shouldBeBlock = terrainHolesFunction(x, y: y, seed: 1, range: 1...4)
-        
-        if y > height{
-            if shouldBeBlock >= 0.6 && shouldBeBlock <= 1.0{
-                let ans = stringToBlockObject(x, y: y, name: determineBlock(height, x: x, y: y, temperature: temperature))
-                self.precalculatedBlocks["\(x) \(y)"] = ans
-                return ans
-            }
-            if isWaterHole(x, y: y, wavelengths: 8...8) == true{
-                let ans = WaterBlock(x: x, y: y)
-                self.precalculatedBlocks["\(x) \(y)"] = ans
-                return ans
-            }
-            let ans = stringToBlockObject(x, y: y, name: "")
-            self.precalculatedBlocks["\(x) \(y)"] = ans
-            return ans
-        }
-        if shouldBeBlock >= roughness * 0.33{
-            let ans = stringToBlockObject(x, y: y, name: determineBlock(height, x: x, y: y, temperature: temperature))
-            self.precalculatedBlocks["\(x) \(y)"] = ans
-            return ans
-        }
-        let ans = stringToBlockObject(x, y: y, name: "")
-        self.precalculatedBlocks["\(x) \(y)"] = ans
-        return ans
-    }
-    
-    func terrainFunction(a: Int, seed: Int, range: Range<Int>) -> Int{
-        
-        if self.precalculatedTerrain.count > 100000{
-            self.precalculatedTerrain = [:]
-        }
-        
+    func terrainFunction(a: Int, seed: Int, range: CountableClosedRange<Int>) -> Double{
         var total1 = 0
-        
-        if self.precalculatedTerrain[a] != nil{
-            return self.precalculatedTerrain[a]!
-        }
-        
         for i in range{
             let pt1 = Int(pow(2.0, Double(i)))
-            total1 += noiseGenerator1d(a, wavelength: pt1, amplitude: pt1 / 2, seed: seed)
+            total1 += noiseGenerator1d(a: a, wavelength: pt1, amplitude: pt1 / 2, seed: seed)
         }
-        
-        self.precalculatedTerrain[a] = total1
-        
-        return total1
+        return Double(total1) / (pow(2.0, Double(range.upperBound)) - pow(2.0, Double(range.lowerBound - 1)))
     }
     
-    func scaleVal(range: Range<Int>, y: Double) -> Double{
-        var total = 0
-        for i in range{
-            total += Int(pow(2.0, Double(i - 1)))
-            
-        }
-        return Double(y) / Double(total)
-    }
-    
-    func terrainHolesFunction(x: Int, y: Int, seed: Int, range: Range<Int>) -> Double{
+    func terrainHolesFunction(x: Int, y: Int, seed: Int, range: CountableClosedRange<Int>) -> Double{
         var total1 = 0
-        var ampSum = 0
-        
         for i in range{
             let pt1 = Int(pow(2.0, Double(i)))
-            total1 += noiseGenerator2d(x, y: y, wavelength: pt1, amplitude: pt1 / 2, seed: seed)
-            ampSum += pt1 / 2
+            total1 += noiseGenerator2d(x: x, y: y, wavelength: pt1, amplitude: pt1 / 2, seed: seed)
         }
-        
-        return Double(total1) / Double(ampSum)
+        return Double(total1) / (pow(2.0, Double(range.upperBound)) - pow(2.0, Double(range.lowerBound - 1)))
     }
     
     func noiseGenerator1d(a: Int, wavelength: Int, amplitude: Int, seed: Int) -> Int{
         if a >= 0{
-            let left = randRange(1, maxVal: Double(amplitude), seed: Int64((a - (a % wavelength)) * wavelength * seed))
-            let right = randRange(1, maxVal: Double(amplitude), seed: Int64((wavelength + (a - (a % wavelength))) * wavelength * seed))
-            return Int(cosineInterplation(left, b: right, x: Double(a % wavelength) / Double(wavelength)))
+            self.randomNums.seed = Int64((a - (a % wavelength)) * wavelength * seed)
+            let left = self.randomNums.rand(minVal: 1.0, maxVal: Double(amplitude))
+            self.randomNums.seed = Int64((wavelength + (a - (a % wavelength))) * wavelength * seed)
+            let right = self.randomNums.rand(minVal: 1.0, maxVal: Double(amplitude))
+            
+            return Int(cosineInterplation(a: left, b: right, x: Double(a % wavelength) / Double(wavelength)))
         }
         else{
-            let left = randRange(1, maxVal: Double(amplitude), seed: Int64((a - (a % wavelength)) * wavelength * seed))
+            self.randomNums.seed = Int64((a - (a % wavelength)) * wavelength * seed)
+            let left = self.randomNums.rand(minVal: 1.0, maxVal: Double(amplitude))
+            self.randomNums.seed = Int64((-wavelength + (a - (a % wavelength))) * wavelength * seed)
+            let right = self.randomNums.rand(minVal: 1.0, maxVal: Double(amplitude))
             
-            let rightSeed = Int64((-wavelength + (a - (a % wavelength))) * wavelength * seed)
-            let right = randRange(1, maxVal: Double(amplitude), seed: rightSeed)
-            
-            return Int(cosineInterplation(left, b: right, x: abs(Double(a % wavelength)) / Double(wavelength)))
+            return Int(cosineInterplation(a: left, b: right, x: abs(Double(a % wavelength)) / Double(wavelength)))
         }
     }
     
@@ -264,11 +230,19 @@ class GenerateTerrainData{
         let indexD = wavelength + (y / wavelength) * wavelength
         let verticalBlendVal: Double = Double(y - indexC) / Double(wavelength)
         
-        let top = cosineInterplation(randRange(0, maxVal: Double(amplitude), seed: Int64(indexA * indexC * wavelength * seed)), b: randRange(0, maxVal: Double(amplitude), seed: Int64(indexB * indexC * wavelength * seed)), x: horizontalBlendVal)
+        self.randomNums.seed = Int64(indexA * indexC * wavelength * seed)
+        let tempA1 = self.randomNums.rand(minVal: 0.0, maxVal: Double(amplitude))
+        self.randomNums.seed = Int64(indexB * indexC * wavelength * seed)
+        let tempB1 = self.randomNums.rand(minVal: 0.0, maxVal: Double(amplitude))
+        let top = cosineInterplation(a: tempA1, b: tempB1, x: horizontalBlendVal)
         
-        let bottom = cosineInterplation(randRange(0, maxVal: Double(amplitude), seed: Int64(indexA * indexD * wavelength * seed)), b: randRange(0, maxVal: Double(amplitude), seed: Int64(indexB * indexD * wavelength * seed)), x: horizontalBlendVal)
+        self.randomNums.seed = Int64(indexA * indexD * wavelength * seed)
+        let tempA2 = self.randomNums.rand(minVal: 0.0, maxVal: Double(amplitude))
+        self.randomNums.seed = Int64(indexB * indexD * wavelength * seed)
+        let tempB2 = self.randomNums.rand(minVal: 0.0, maxVal: Double(amplitude))
+        let bottom = cosineInterplation(a: tempA2, b: tempB2, x: horizontalBlendVal)
         
-        return Int(cosineInterplation(top, b: bottom, x: verticalBlendVal))
+        return Int(cosineInterplation(a: top, b: bottom, x: verticalBlendVal))
         
     }
     
@@ -279,73 +253,40 @@ class GenerateTerrainData{
         return  a * (1 - cosined) + b * cosined
     }
     
-    func isWaterHole(x: Int, y: Int, wavelengths: Range<Int>) -> Bool{
-        for i in wavelengths{
-            let wave = Int(pow(2.0, Double(i)))
-            let leftX = x - (x % wave)
-            let rightX = leftX + wave
-            let leftLeftX = leftX - wave
-            let rightRightX = rightX + wave
-            
-            let leftXHeight = terrainFunction(leftX, seed: 8, range: 1...8)
-            let leftLeftXHeight = terrainFunction(leftLeftX, seed: 8, range: 1...8)
-            let rightXHeight = terrainFunction(rightX, seed: 8, range: 1...8)
-            let rightRightXHeight = terrainFunction(rightRightX, seed: 8, range: 1...8)
-            
-            if leftLeftXHeight > leftXHeight && rightXHeight > leftXHeight{
-                if randRange(0, maxVal: 1, seed: Int64(leftXHeight * leftX * i * 5)) <= self.calculateWaterProbability((Double(terrainHolesFunction(leftX, y: leftXHeight, seed: 6, range: 6...8)) - Double(leftXHeight - 125) * 0.005)){
-                    let height = randRange(1, maxVal: Double(min(leftLeftXHeight - leftXHeight, rightXHeight - leftXHeight)), seed: Int64(leftXHeight * leftX * 2 * i))
-                    if y - leftXHeight <= Int(height){
-                        return true
-                    }
-                }
-            }
-            
-            if leftXHeight > rightXHeight && rightRightXHeight > rightXHeight{
-                if randRange(0, maxVal: 1, seed: Int64(rightXHeight * rightX * i * 5)) <= self.calculateWaterProbability((Double(terrainHolesFunction(rightX, y: rightXHeight, seed: 6, range: 6...8)) - Double(rightXHeight - 125) * 0.005)){
-                    let height = randRange(1, maxVal: Double(min(leftXHeight - rightXHeight, rightRightXHeight - rightXHeight)), seed: Int64(rightXHeight * rightX * 2 * i))
-                    if y - rightXHeight < Int(height){
-                        return true
-                    }
-                }
-            }
+    func insertMemo(gridPoint: GridPoint, block: Block) -> Block{
+        if self.memo.count == self.memo.capacity{
+            self.memo.removeAll(keepingCapacity: true)
         }
-        return false
+        self.memo[gridPoint] = block
+        return block
     }
+}
+
+class Block{
+    var asset: String?
+    var x: Int?
+    var y: Int?
+    var visible: Bool?
     
-    func calculateWaterProbability(temp: Double) -> Double{
-        var prob = -7 * (temp - 0.5) * (temp - 0.5) + 0.6
-        
-        if prob < 0.05{
-            prob = 0.05
-        }
-        
-        return prob
+    init(){
+        self.x = nil
+        self.y = nil
+        self.asset = nil
+        self.visible = nil
     }
-    
-    
-    func isWater(blockType: Block) -> Bool{
-        if self.memo.count > 100000{
-            self.memo = [:]
-        }
-        
-        if blockType.asset == "waterBlock"{
-            return true
-        }
-        
-        if self.memo["\(blockType.x) \(blockType.y)"] != nil{
-            return self.memo["\(blockType.x) \(blockType.y)"]!
-        }
-        
-        if blockType.y > self.terrainFunction(blockType.x, seed: 8, range: 1...8){
-            return false
-        }
-        
-        if blockType.visible == false{
-            let ans = self.isWater(self.isValidBlock(blockType.x, y: blockType.y + 1))
-            self.memo["\(blockType.x) \(blockType.y)"] = ans
-            return ans
-        }
-        return false
-    }
+}
+
+//class Tree{
+//    var x: Int
+//    var topY: Int
+//
+//    init(x: Int, topY: Int){
+//        self.x = x
+//        self.topY = topY
+//    }
+//}
+
+struct GridPoint: Hashable{
+    var x: Int
+    var y: Int
 }
