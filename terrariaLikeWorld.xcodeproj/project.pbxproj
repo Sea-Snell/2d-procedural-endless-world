@@ -16,7 +16,7 @@
 		746555421C076B8D005A20BF /* terrariaLikeWorldUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555411C076B8D005A20BF /* terrariaLikeWorldUITests.swift */; };
 		746555541C07777A005A20BF /* GenerateTerrainData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555531C07777A005A20BF /* GenerateTerrainData.swift */; };
 		746555561C07796F005A20BF /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555551C07796F005A20BF /* Camera.swift */; };
-		7465555A1C08DEF3005A20BF /* RandomNumbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746555591C08DEF3005A20BF /* RandomNumbers.swift */; };
+		7F0F26012135CD3400B3559C /* RandomNums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F26002135CD3400B3559C /* RandomNums.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,7 +52,7 @@
 		746555431C076B8D005A20BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		746555531C07777A005A20BF /* GenerateTerrainData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenerateTerrainData.swift; sourceTree = "<group>"; };
 		746555551C07796F005A20BF /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
-		746555591C08DEF3005A20BF /* RandomNumbers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomNumbers.swift; sourceTree = "<group>"; };
+		7F0F26002135CD3400B3559C /* RandomNums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomNums.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +107,7 @@
 				746555241C076B8D005A20BF /* GameScene.swift */,
 				746555551C07796F005A20BF /* Camera.swift */,
 				746555531C07777A005A20BF /* GenerateTerrainData.swift */,
-				746555591C08DEF3005A20BF /* RandomNumbers.swift */,
+				7F0F26002135CD3400B3559C /* RandomNums.swift */,
 				746555261C076B8D005A20BF /* GameScene.sks */,
 				746555281C076B8D005A20BF /* Assets.xcassets */,
 				7465552A1C076B8D005A20BF /* MainMenu.xib */,
@@ -271,7 +271,7 @@
 				746555251C076B8D005A20BF /* GameScene.swift in Sources */,
 				746555231C076B8D005A20BF /* AppDelegate.swift in Sources */,
 				746555561C07796F005A20BF /* Camera.swift in Sources */,
-				7465555A1C08DEF3005A20BF /* RandomNumbers.swift in Sources */,
+				7F0F26012135CD3400B3559C /* RandomNums.swift in Sources */,
 				746555541C07777A005A20BF /* GenerateTerrainData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

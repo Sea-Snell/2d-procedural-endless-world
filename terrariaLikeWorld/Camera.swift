@@ -19,6 +19,7 @@ class MyCamera: SKNode{
     var lastBlockWidth: CGFloat?
     var dataGenerator: GenerateTerrainData
     
+    
     override init(){
         self.blocks = []
         self.blockWidth = 0.0
