@@ -10,6 +10,7 @@ import Foundation
 import SpriteKit
 
 
+
 class MyCamera: SKNode{
     
     var blocks: [SKSpriteNode]
